@@ -37,6 +37,11 @@ public class User {
     @JsonManagedReference
     private Patient patient;
 
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @PrimaryKeyJoinColumn(name = "user_id")
+    @JsonManagedReference
+    private Admin admin;
+
     public int getUserId() {
         return userId;
     }
