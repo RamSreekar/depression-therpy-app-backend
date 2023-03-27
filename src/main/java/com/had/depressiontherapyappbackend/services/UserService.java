@@ -1,6 +1,7 @@
 package com.had.depressiontherapyappbackend.services;
 
 import com.fasterxml.jackson.databind.JsonNode;
+import com.had.depressiontherapyappbackend.entities.Doctor;
 import com.had.depressiontherapyappbackend.entities.Patient;
 import com.had.depressiontherapyappbackend.entities.User;
 import org.springframework.http.ResponseEntity;
@@ -15,4 +16,6 @@ public interface UserService {
     public ResponseEntity<?> checkEmail(User user);
 
     public ResponseEntity<?> addPatient(Patient patient) throws Exception;
+
+    public ResponseEntity<?> registerDoctor(Doctor doctor) throws Exception;
 }

@@ -2,15 +2,27 @@ package com.had.depressiontherapyappbackend.entities;
 
 import javax.persistence.*;
 
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.had.depressiontherapyappbackend.entities.Role;
 import net.bytebuddy.build.ToStringPlugin;
 
 import java.lang.annotation.Target;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
 
 @Entity
 @Table(name = "user")
-public class User {
+@JsonIgnoreProperties(ignoreUnknown = true)
+public class User implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -40,6 +52,11 @@ public class User {
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @PrimaryKeyJoinColumn(name = "user_id")
     @JsonManagedReference
+    private Doctor doctor;
+
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @PrimaryKeyJoinColumn(name = "user_id")
+    @JsonManagedReference
     private Admin admin;
 
     public int getUserId() {
@@ -58,6 +75,7 @@ public class User {
         this.email = email;
     }
 
+    @Override
     public String getPassword() {
         return password;
     }
@@ -90,6 +108,21 @@ public class User {
         this.patient = patient;
     }
 
+    public Doctor getDoctor() {
+        return doctor;
+    }
+
+    public void setDoctor(Doctor doctor) {
+        this.doctor = doctor;
+    }
+
+    public Admin getAdmin() {
+        return admin;
+    }
+
+    public void setAdmin(Admin admin) {
+        this.admin = admin;
+    }
 
     @Override
     public String toString() {
@@ -100,5 +133,44 @@ public class User {
                 ", userRole=" + userRole +
                 ", demographics=" + demographics +
                 '}';
+    }
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        Role userRole = this.userRole;
+        List<Role> roleList = new ArrayList<Role>();
+        roleList.add(userRole);
+
+        //  = new ArrayList<SimpleGrantedAuthority>();
+        // authoritiesList.add(userRole.getRoleType());
+        List<SimpleGrantedAuthority> authoritiesList = roleList.stream().map((role) -> new SimpleGrantedAuthority(role.getRoleType())).collect(Collectors.toList());
+
+        return authoritiesList;
+    }
+
+
+    @Override
+    public String getUsername() {
+        return this.getEmail();
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return true;
     }
 }

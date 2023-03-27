@@ -2,12 +2,13 @@ package com.had.depressiontherapyappbackend.entities;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 
+import lombok.Data;
+
 import javax.persistence.*;
-import javax.print.Doc;
-import javax.websocket.OnError;
 
 @Entity
 @Table(name = "doctor_details")
+@Data
 public class DoctorDetails {
 
     @Id

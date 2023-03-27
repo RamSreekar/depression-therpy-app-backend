@@ -2,14 +2,13 @@ package com.had.depressiontherapyappbackend.serviceImpl;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.had.depressiontherapyappbackend.entities.Demographics;
-import com.had.depressiontherapyappbackend.entities.Patient;
-import com.had.depressiontherapyappbackend.entities.Role;
-import com.had.depressiontherapyappbackend.entities.User;
+import com.had.depressiontherapyappbackend.entities.*;
 import com.had.depressiontherapyappbackend.payloads.ApiResponse;
+import com.had.depressiontherapyappbackend.payloads.ResponseUser;
 import com.had.depressiontherapyappbackend.repositories.RoleRepo;
 import com.had.depressiontherapyappbackend.repositories.UserRepo;
 import com.had.depressiontherapyappbackend.services.UserService;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -38,6 +37,44 @@ public class UserServiceImpl implements UserService {
         this.userRepo = userRepo;
     }
 
+    public static int calculateAgeFromDob(String dobString) {
+        //Calculate Age from DOB
+        int calculatedAge;
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d/MM/yyyy");
+
+        LocalDate dobDate = LocalDate.parse(dobString, formatter);
+        calculatedAge = Period.between(dobDate, LocalDate.now()).getYears();
+
+        return calculatedAge;
+    }
+
+    public static ResponseUser userToResponseUserMapper(User reqUser) {
+        ResponseUser responseUserObj = new ResponseUser();
+
+        responseUserObj.userId = reqUser.getUserId();
+        responseUserObj.email = reqUser.getEmail();
+        responseUserObj.userRole = reqUser.getUserRole();
+        responseUserObj.demographics = reqUser.getDemographics();
+        responseUserObj.patient = reqUser.getPatient();
+        responseUserObj.doctor = reqUser.getDoctor();
+
+        return responseUserObj;
+    }
+
+    public static User responseUserToUserMapper(ResponseUser responseUser) {
+        User user = new User();
+
+        user.setUserId(responseUser.userId); 
+        user.setEmail(responseUser.email);
+        user.setUserRole(responseUser.userRole);
+        user.setDemographics(responseUser.demographics);
+        user.setPatient(responseUser.patient);
+        user.setDoctor(responseUser.doctor);
+
+        return user;
+    }
+
+
     @Override
     public ResponseEntity<?> createUser(User user) {
         ResponseEntity<?> emailCheck = checkEmail(user);
@@ -50,12 +87,8 @@ public class UserServiceImpl implements UserService {
 
         user.setUserRole(userRole);
 
-        //Calculate Age from DOB
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d/MM/yyyy");
         String dobString = user.getDemographics().getDob();
-
-        LocalDate dobDate = LocalDate.parse(dobString, formatter);
-        int age = Period.between(dobDate, LocalDate.now()).getYears();
+        int age = calculateAgeFromDob(dobString);
 
         Demographics demographics = user.getDemographics();
         demographics.setAge(age);
@@ -67,9 +100,15 @@ public class UserServiceImpl implements UserService {
         String email = user.getEmail();
         List<User> res = userRepo.findByEmail(email);
         int userId = res.get(0).getUserId();
+        
+        User responseObj = res.get(0);
+        // User responseObj = new User();
+        // responseObj.setUserId(userId); 
 
+        //ResponseUser responseUserObj = userToResponseUserMapper(responseObj);
+        
         return new ResponseEntity<>(
-                new ApiResponse(true, "User created", Map.of("userId" , userId))
+                new ApiResponse(true, "User created", responseObj)
                 , HttpStatus.OK
         );
     }
@@ -87,6 +126,9 @@ public class UserServiceImpl implements UserService {
 
         User reqUser = res.get();
 
+
+        //ResponseUser responseUserObj = userToResponseUserMapper(reqUser);
+    
 
         return new ResponseEntity<>(
                 new ApiResponse(true, "", reqUser)
@@ -127,10 +169,36 @@ public class UserServiceImpl implements UserService {
         userRepo.save(user);
 
         return new ResponseEntity<>(
-                        new ApiResponse(true, "Patient details added.", user)
+                        new ApiResponse(true, "Patient details added.", userToResponseUserMapper(user))
                         , HttpStatus.OK
                     );
     }
 
+    @Override
+    public ResponseEntity<?> registerDoctor(Doctor doctor) throws Exception {
+        int userId = doctor.getDoctorId();
+
+        ResponseEntity<?> res = getUser(userId);
+        ApiResponse apiResponse = (ApiResponse) res.getBody();
+        User user = (User) apiResponse.getResponse();
+
+        if(user == null) {
+            return new ResponseEntity<>(
+                    new ApiResponse(false, "User with given Id doesn't exist", null)
+                    , HttpStatus.OK
+            );
+        }
+
+        doctor.setUser(user);
+        user.setDoctor(doctor);
+        userRepo.save(user);
+
+        return new ResponseEntity<>(
+                new ApiResponse(true, "Patient details added.", userToResponseUserMapper(user))
+                , HttpStatus.OK
+        );
+    }
+
 }
+
 

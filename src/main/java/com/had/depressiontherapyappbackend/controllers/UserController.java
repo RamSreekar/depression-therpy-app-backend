@@ -1,6 +1,7 @@
 package com.had.depressiontherapyappbackend.controllers;
 
 import com.fasterxml.jackson.databind.JsonNode;
+import com.had.depressiontherapyappbackend.entities.Doctor;
 import com.had.depressiontherapyappbackend.entities.Patient;
 import com.had.depressiontherapyappbackend.entities.User;
 import com.had.depressiontherapyappbackend.serviceImpl.UserServiceImpl;
@@ -11,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+
 
 @RestController
 @RequestMapping(path = "/user")
@@ -42,4 +44,10 @@ public class UserController {
     public ResponseEntity<?> addPatient(@RequestBody Patient patient) throws Exception {
         return userServiceImpl.addPatient(patient);
     }
+
+    @PostMapping(path = "/registerDoctor")
+    public ResponseEntity<?> registerPatient(Doctor doctor) throws Exception {
+        return userServiceImpl.registerDoctor(doctor);
+    }
+
 }
