@@ -13,7 +13,7 @@ public class Demographics {
     @Id
     @Column(name = "id")
     private int userId;
-
+ 
     @OneToOne
     @MapsId
     @JsonBackReference
