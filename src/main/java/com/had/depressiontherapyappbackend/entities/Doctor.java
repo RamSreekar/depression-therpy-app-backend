@@ -1,6 +1,7 @@
 package com.had.depressiontherapyappbackend.entities;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import lombok.Data;
@@ -33,8 +34,19 @@ public class Doctor {
     private DoctorDetails doctorDetails;
 
     @OneToMany(mappedBy = "doctor", fetch = FetchType.EAGER)
-    @JsonBackReference
+    @JsonIgnore
     private List<Patient> patientList;
+
+    @Override
+    public String toString() {
+        return "Doctor{" +
+                "doctorId=" + doctorId +
+                //", user=" + user +
+                // ", admin=" + admin.toString()  +
+                // ", doctorDetails=" + doctorDetails.toString()  +
+                // ", patientList" + patientList.toString() +
+                '}';
+    }
 
     // public int getDoctorId() {
     //     return doctorId;

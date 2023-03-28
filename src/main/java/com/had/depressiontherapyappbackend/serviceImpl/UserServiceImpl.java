@@ -79,7 +79,7 @@ public class UserServiceImpl implements UserService {
     public ResponseEntity<?> createUser(User user) {
         ResponseEntity<?> emailCheck = checkEmail(user);
         ApiResponse apiResponse = (ApiResponse) emailCheck.getBody();
-        boolean emailExists = apiResponse.isSuccess();
+        boolean emailExists = apiResponse.getSuccess();
         if(!emailExists) return emailCheck;
 
         int roleId = user.getUserRole().getRoleId();
@@ -197,6 +197,36 @@ public class UserServiceImpl implements UserService {
                 new ApiResponse(true, "Patient details added.", userToResponseUserMapper(user))
                 , HttpStatus.OK
         );
+    }
+
+    public void createUserWithoutApi() {
+        int roleId = 3;
+        User user = new User();
+        Role userRole =  (Role) this.roleRepo.findById(roleId).get();
+        Demographics demographics = new Demographics();
+
+        demographics.setFirstName("User");
+        demographics.setLastName("Auth");
+        demographics.setDob("01/01/2000");
+        demographics.setGender("M");
+        demographics.setUser(null);
+        demographics.setAge(0);
+        //demographics.setUserId(1);
+
+
+        user.setEmail("user@auth.com");
+        user.setPassword("password");
+        user.setUserRole(userRole);
+        user.setDemographics(demographics);
+        user.setDoctor(null);
+        user.setPatient(null);
+        user.setAdmin(null);
+        //user.setUserId(1);
+        
+        //userRepo.save(user);
+
+        createUser(user);
+        System.out.println("\nAdded User\n");
     }
 
 }

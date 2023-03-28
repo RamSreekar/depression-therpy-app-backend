@@ -27,9 +27,9 @@ public class Patient {
     @JsonManagedReference
     private MedicalHistory medicalHistory;
 
-    @ManyToOne(targetEntity = Doctor.class, fetch = FetchType.EAGER)
-    @JoinColumn(name = "id")
-    @JsonManagedReference
+    // @MapsId("doctor")
+    @ManyToOne
+    @JoinColumn(name = "doctor_id")
     private Doctor doctor;
 
     @Column(name = "wants_doc")

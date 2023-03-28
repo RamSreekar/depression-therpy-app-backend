@@ -14,6 +14,8 @@ import com.had.depressiontherapyappbackend.repositories.PatientRepo;
 import com.had.depressiontherapyappbackend.repositories.UserRepo;
 import com.had.depressiontherapyappbackend.services.AdminService;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 import org.apache.coyote.Response;
@@ -48,7 +50,7 @@ public class AdminServiceImpl implements AdminService {
     public ResponseEntity<?> createAdmin(User user) {
         ResponseEntity<?> createUserResponse = this.userServiceImpl.createUser(user);
         ApiResponse createUserApiResponse = (ApiResponse) createUserResponse.getBody();
-        boolean isUserCreated = createUserApiResponse.isSuccess();
+        boolean isUserCreated = createUserApiResponse.getSuccess();
 
         // if(!isUserCreated) {
         //     return new ResponseEntity<>(
@@ -111,30 +113,31 @@ public class AdminServiceImpl implements AdminService {
 
     @Override
     public ResponseEntity<?> assignDoctorToPatient(int patientId, int doctorId) {
-        Patient patient = this.patientRepo.getReferenceById(patientId);
+        ResponseEntity<?> patientResponseEntity = this.userServiceImpl.getUser(patientId);
+        ApiResponse patientApiResponse = (ApiResponse) patientResponseEntity.getBody();
+        boolean patientExists = patientApiResponse.getSuccess();
 
-        if(patient == null) {
-            return new ResponseEntity<>(
-                    new ApiResponse(false, "Ivalid Id! (Patient doesn't exist with the given Id).", null)
-                    , HttpStatus.OK
-            );
+        if(!patientExists) {
+            return patientResponseEntity;
         }
 
-        Doctor doctor = this.doctorRepo.getReferenceById(doctorId);
+        User requiredPatientUser = (User) patientApiResponse.getResponse();
+        Patient requiredPatient = requiredPatientUser.getPatient();
 
-        System.out.println("\n");
-        System.out.println(doctor);
-        System.out.println("\n");
-        
-        if(doctor == null) {
-            return new ResponseEntity<>(
-                    new ApiResponse(false, "Ivalid Id! (Doctor doesn't exist with the given Id).", null)
-                    , HttpStatus.OK
-            );
+
+        ResponseEntity<?> doctorResponseEntity = this.userServiceImpl.getUser(doctorId);
+        ApiResponse doctorApiResponse = (ApiResponse) doctorResponseEntity.getBody();
+        boolean doctorExists = doctorApiResponse.getSuccess();
+
+        if(!doctorExists) {
+            return doctorResponseEntity;
         }
 
-        patient.setDoctor(doctor);
-        this.patientRepo.save(patient);
+        User requiredDoctorUser = (User) doctorApiResponse.getResponse();
+        Doctor requiredDoctor = requiredDoctorUser.getDoctor();
+    
+        requiredPatient.setDoctor(requiredDoctor);
+        this.patientRepo.save(requiredPatient);
 
         return new ResponseEntity<>(
                 new ApiResponse(true, "Doctor assigned to patient.", null)

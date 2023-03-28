@@ -8,5 +8,5 @@ import com.had.depressiontherapyappbackend.entities.Patient;
 
 @Repository
 public interface PatientRepo extends JpaRepository<Patient, Integer> {
-    
+     
 }

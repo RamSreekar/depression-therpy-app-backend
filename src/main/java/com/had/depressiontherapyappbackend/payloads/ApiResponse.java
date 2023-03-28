@@ -14,7 +14,7 @@ public class ApiResponse {
         this.response = response;
     }
 
-    public boolean isSuccess() {
+    public boolean getSuccess() {
         return success;
     }
 
