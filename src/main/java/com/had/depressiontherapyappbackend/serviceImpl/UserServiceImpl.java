@@ -150,6 +150,40 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public ResponseEntity<?> getUserFromEmail(String email) {
+        ApiResponse apiResponse;
+        List<User> res = userRepo.findByEmail(email);
+
+        if(res.size() == 0)
+            apiResponse = new ApiResponse(false, "User doesn't exist with given username.", null);
+        
+        User user = res.get(0);
+
+        apiResponse = new ApiResponse(true, "User exists!", Map.of("userId", user.getUserId()));
+
+        return new ResponseEntity<>(apiResponse, HttpStatus.OK);
+    }
+
+    @Override
+    public ResponseEntity<?> getDemographicsOfUser(int userId) {
+        Optional<User> res = userRepo.findById(userId);
+
+        if(res.isEmpty()) {
+            return new ResponseEntity<>(
+                    new ApiResponse(false, "User with given ID doesn't exist", null)
+                    , HttpStatus.OK
+            );
+        }
+
+        User reqUser = res.get();
+
+        return new ResponseEntity<>(
+                new ApiResponse(true, "", reqUser.getDemographics())
+                , HttpStatus.OK
+        );
+    }
+
+    @Override
     public ResponseEntity<?> addPatient(Patient request) throws Exception {
         int userId = request.getPatientId();
 

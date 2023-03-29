@@ -50,4 +50,13 @@ public class UserController {
         return userServiceImpl.registerDoctor(doctor);
     }
 
+    @GetMapping(path = "/{email}/getUserId")
+    public ResponseEntity<?> getUserFromEmail(@PathVariable("email") String email) {
+        return userServiceImpl.getUserFromEmail(email);
+    }
+
+    @GetMapping(path = "/{userId}/demographics")
+    public ResponseEntity<?> getDemographicsOfUser(@PathVariable("userId") int userId) {
+        return userServiceImpl.getDemographicsOfUser(userId);
+    }
 }

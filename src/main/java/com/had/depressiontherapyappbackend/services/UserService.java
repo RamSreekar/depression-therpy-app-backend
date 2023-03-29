@@ -13,7 +13,11 @@ public interface UserService {
 
     public ResponseEntity<?> getUser(int userId);
 
-    public ResponseEntity<?> checkEmail(User user);
+    public ResponseEntity<?> getUserFromEmail(String email);
+
+    public ResponseEntity<?> getDemographicsOfUser(int userId);
+
+    public ResponseEntity<?> checkEmail(User user); 
 
     public ResponseEntity<?> addPatient(Patient patient) throws Exception;
 
