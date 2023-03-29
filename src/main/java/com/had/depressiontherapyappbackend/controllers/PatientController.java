@@ -23,4 +23,9 @@ public class PatientController {
         return patientServiceImpl.getPatientMedicalHistory(patientId);
     }
 
+    @GetMapping(path = "/{patientId}/assignments")
+    public ResponseEntity<?> getAssignmentList(@PathVariable("patientId") int patientId) {
+        return patientServiceImpl.getAssignmentList(patientId);
+    }
+
 }

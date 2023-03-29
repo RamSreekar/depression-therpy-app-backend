@@ -1,6 +1,7 @@
 package com.had.depressiontherapyappbackend.serviceImpl;
 
-import org.apache.catalina.connector.Response;
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -24,6 +25,24 @@ public class ItemServiceImpl implements ItemService {
     @Autowired
     public ItemServiceImpl(ItemRepo itemRepo) {
         this.itemRepo = itemRepo;
+    }
+
+    public ResponseEntity<?> getItemUsingId(int itemId) {
+        Optional<Item> queryResponse = itemRepo.findById(itemId);
+
+        if(queryResponse.isEmpty()) {
+            return new ResponseEntity<>(
+                    new ApiResponse(false, "Item with given ID doesn't exist", null)
+                    , HttpStatus.OK
+            );
+        }
+
+        Item requiredItem = (Item) queryResponse.get();
+
+        return new ResponseEntity<>(
+                new ApiResponse(true, "Item exists!", requiredItem)
+                , HttpStatus.OK
+        );
     }
 
     @Override

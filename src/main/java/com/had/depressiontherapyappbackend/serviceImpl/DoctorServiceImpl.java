@@ -1,5 +1,7 @@
 package com.had.depressiontherapyappbackend.serviceImpl;
 
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,6 +20,24 @@ public class DoctorServiceImpl implements DoctorService {
     @Autowired
     public DoctorServiceImpl(DoctorRepo doctorRepo) {
         this.doctorRepo = doctorRepo;
+    }
+
+    public ResponseEntity<?> getDoctorUsingId(int doctorId) {
+        Optional<Doctor> queryResponse = doctorRepo.findById(doctorId);
+
+        if(queryResponse.isEmpty()) {
+            return new ResponseEntity<>(
+                    new ApiResponse(false, "Doctor with given ID doesn't exist", null)
+                    , HttpStatus.OK
+            );
+        }
+
+        Doctor requiredDoctor = (Doctor) queryResponse.get();
+
+        return new ResponseEntity<>(
+                new ApiResponse(true, "Doctor exists!", requiredDoctor)
+                , HttpStatus.OK
+        );
     }
 
     @Override

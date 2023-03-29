@@ -9,4 +9,5 @@ public interface PatientService {
     
     public ResponseEntity<?> getPatientMedicalHistory(int patientId);
 
+    public ResponseEntity<?> getAssignmentList(int patientId);
 }
