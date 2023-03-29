@@ -18,7 +18,7 @@ public class Doctor {
     @Id
     @Column(name = "id")
     private int doctorId;
-
+ 
     @OneToOne
     @MapsId
     @JsonBackReference
@@ -36,6 +36,10 @@ public class Doctor {
     @OneToMany(mappedBy = "doctor", fetch = FetchType.EAGER)
     @JsonIgnore
     private List<Patient> patientList;
+
+    @OneToMany(mappedBy = "doctor")
+    @JsonIgnore
+    private List<Assignment> assignmentList;
 
     @Override
     public String toString() {

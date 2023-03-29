@@ -2,12 +2,14 @@ package com.had.depressiontherapyappbackend.entities;
 
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import lombok.Data;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Table(name = "patient")
@@ -17,7 +19,7 @@ public class Patient {
     @Column(name = "id")
     private int patientId;
 
-    @OneToOne
+    @OneToOne 
     @MapsId
     @JsonBackReference
     private User user;
@@ -31,6 +33,10 @@ public class Patient {
     @ManyToOne
     @JoinColumn(name = "doctor_id")
     private Doctor doctor;
+
+    @OneToMany(mappedBy = "patient")
+    @JsonIgnore
+    private List<Assignment> assignmentList;
 
     @Column(name = "wants_doc")
     private boolean wantsDoc;
