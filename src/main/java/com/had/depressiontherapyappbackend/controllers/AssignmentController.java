@@ -30,7 +30,7 @@ public class AssignmentController {
         return assigmentServiceImpl.createAssignment(request);
     }
 
-    @PostMapping(path = "/addList")
+    @PostMapping(path = "")
     public ResponseEntity<?> addListOfAssignmnets(@RequestBody List<JsonNode> request) {
         return assigmentServiceImpl.addListOfAssignmnets(request);
     }

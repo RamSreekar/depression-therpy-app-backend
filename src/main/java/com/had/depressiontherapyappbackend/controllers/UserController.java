@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.*;
 
 
 @RestController
-@RequestMapping(path = "/user")
+@RequestMapping(path = "/users")
 public class UserController {
 
     private UserServiceImpl userServiceImpl;
@@ -40,6 +40,11 @@ public class UserController {
         return userServiceImpl.checkEmail(user);
     }
 
+    @PostMapping(path = "/login")
+    public ResponseEntity<?> userLogin(@RequestBody User user) {
+        return userServiceImpl.login(user);
+    }
+
     @PostMapping(path = "/addPatient")
     public ResponseEntity<?> addPatient(@RequestBody Patient patient) throws Exception {
         return userServiceImpl.addPatient(patient);
@@ -50,8 +55,9 @@ public class UserController {
         return userServiceImpl.registerDoctor(doctor);
     }
 
-    @GetMapping(path = "/{email}/getUserId")
+    @GetMapping(path = "/{email}")
     public ResponseEntity<?> getUserFromEmail(@PathVariable("email") String email) {
+        System.out.println("\n"+email+"\n");
         return userServiceImpl.getUserFromEmail(email);
     }
 

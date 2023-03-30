@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.had.depressiontherapyappbackend.serviceImpl.ActivityServiceImpl;
 
 @RestController
-@RequestMapping(path = "/activity")
+@RequestMapping(path = "/activities")
 public class ActivityController {
     
     private ActivityServiceImpl activityServiceImpl;
@@ -18,7 +18,7 @@ public class ActivityController {
         this.activityServiceImpl = activityServiceImpl;
     }
 
-    @GetMapping(path = "/all")
+    @GetMapping(path = "")
     public ResponseEntity<?> getAllActivities() {
         return activityServiceImpl.getAllActivities();
     }

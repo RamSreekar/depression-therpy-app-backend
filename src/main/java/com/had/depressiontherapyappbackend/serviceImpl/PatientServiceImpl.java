@@ -55,9 +55,9 @@ public class PatientServiceImpl implements PatientService {
         Patient patient = (Patient) queryResponse.get();
 
         return new ResponseEntity<>(
-                    new ApiResponse(false, "User with given ID doesn't exist", patient.getMedicalHistory())
-                    , HttpStatus.OK
-            );
+                new ApiResponse(true, "User exists", patient.getMedicalHistory())
+                , HttpStatus.OK
+        );
     }
 
     @Override

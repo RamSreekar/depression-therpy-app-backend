@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.had.depressiontherapyappbackend.serviceImpl.PatientServiceImpl;
 
 @RestController
-@RequestMapping(path = "/patient")
+@RequestMapping(path = "/patients")
 public class PatientController {
     
     private PatientServiceImpl patientServiceImpl;
@@ -18,7 +18,7 @@ public class PatientController {
         this.patientServiceImpl = patientServiceImpl;
     }
 
-    @GetMapping(path = "/{patientId}/medical_history")
+    @GetMapping(path = "/{patientId}/medical-history")
     public ResponseEntity<?> getPatientMedicalHistory(@PathVariable("patientId") int patientId) {
         return patientServiceImpl.getPatientMedicalHistory(patientId);
     }

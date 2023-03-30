@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.had.depressiontherapyappbackend.serviceImpl.DoctorServiceImpl;
 
 @RestController
-@RequestMapping(path = "/doctor")
+@RequestMapping(path = "/doctors")
 public class DoctorController {
 
     private DoctorServiceImpl doctorServiceImpl;
@@ -21,9 +21,9 @@ public class DoctorController {
         this.doctorServiceImpl = doctorServiceImpl;
     }
 
-    @GetMapping(path = "/{doctorId}/getPatientList")
+    @GetMapping(path = "/{doctorId}/patients")
     public ResponseEntity<?> getPatientListOfDoctor(@PathVariable("doctorId") int doctorId) {
-        return doctorServiceImpl.getPatientListOfDoctor(doctorId);
+        return doctorServiceImpl.getPatientIdListofDoctor(doctorId);
     }
 
 }

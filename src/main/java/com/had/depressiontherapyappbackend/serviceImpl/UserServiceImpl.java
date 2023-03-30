@@ -144,7 +144,25 @@ public class UserServiceImpl implements UserService {
         if(res.size() == 0)
             apiResponse = new ApiResponse(true, "Email is new", null);
         else
-            apiResponse = new ApiResponse(false, "Email already exists!", null);
+            return new ResponseEntity<>(Map.of("token", "randomtokenjassudurgajwt"), HttpStatus.OK);
+            //apiResponse = new ApiResponse(false, "Email already exists!", Map.of("token", "randomtokenjassudurgajwt"));
+
+        return new ResponseEntity<>(apiResponse, HttpStatus.OK);
+    }
+
+    public ResponseEntity<?> login(User user) {
+        System.out.println();
+        System.out.println(user);
+        System.out.println();
+        ApiResponse apiResponse;
+        List<User> res = userRepo.findByEmail(user.getEmail());
+
+        if(res.size() == 0) {
+            apiResponse = new ApiResponse(false, "Email doesn't exist!", null);
+            //return new ResponseEntity<>(apiResponse, HttpStatus.FA);
+        }
+        else
+            apiResponse = new ApiResponse(true, "Email exists!", Map.of("token", "randomtokenjassudurgajwt"));
 
         return new ResponseEntity<>(apiResponse, HttpStatus.OK);
     }
@@ -154,12 +172,13 @@ public class UserServiceImpl implements UserService {
         ApiResponse apiResponse;
         List<User> res = userRepo.findByEmail(email);
 
-        if(res.size() == 0)
+        if(res.size() == 0) {
             apiResponse = new ApiResponse(false, "User doesn't exist with given username.", null);
-        
-        User user = res.get(0);
-
-        apiResponse = new ApiResponse(true, "User exists!", Map.of("userId", user.getUserId()));
+        }
+        else {
+            User user = res.get(0);
+            apiResponse = new ApiResponse(true, "User exists!", Map.of("userId", user.getUserId()));
+        }
 
         return new ResponseEntity<>(apiResponse, HttpStatus.OK);
     }

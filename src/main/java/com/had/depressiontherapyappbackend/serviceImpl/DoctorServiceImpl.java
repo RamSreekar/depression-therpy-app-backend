@@ -1,5 +1,7 @@
 package com.had.depressiontherapyappbackend.serviceImpl;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.had.depressiontherapyappbackend.entities.Doctor;
+import com.had.depressiontherapyappbackend.entities.Patient;
 import com.had.depressiontherapyappbackend.payloads.ApiResponse;
 import com.had.depressiontherapyappbackend.repositories.DoctorRepo;
 import com.had.depressiontherapyappbackend.services.DoctorService;
@@ -44,10 +47,43 @@ public class DoctorServiceImpl implements DoctorService {
     public ResponseEntity<?> getPatientListOfDoctor(int doctorId) {
         Doctor requiredDoctor = (Doctor) doctorRepo.findById(doctorId).get();
 
+        ResponseEntity responseEntity = getDoctorUsingId(doctorId);
+        ApiResponse apiResponse = (ApiResponse) responseEntity.getBody();
+        boolean isDoctorExisting = apiResponse.getSuccess(); 
+
+        if(!isDoctorExisting) {
+            return responseEntity;
+        }
+
         return new ResponseEntity<>(
             new ApiResponse(true, "", requiredDoctor.getPatientList()), 
             HttpStatus.OK
         );    
+    }
+
+    public ResponseEntity<?> getPatientIdListofDoctor(int doctorId) {
+        ResponseEntity responseEntity = getDoctorUsingId(doctorId);
+        ApiResponse apiResponse = (ApiResponse) responseEntity.getBody();
+        boolean isSuccess = apiResponse.getSuccess();
+
+        if(!isSuccess) {
+            return responseEntity;
+        }
+
+        Doctor requireDoctor = (Doctor) apiResponse.getResponse();
+        List<Patient> patientObjectList = requireDoctor.getPatientList();
+        List<Integer> patientIdsList = new ArrayList<Integer>();
+
+        Patient patient;
+        for(int i=0; i<patientObjectList.size(); i++) {
+            patient = patientObjectList.get(i);
+            patientIdsList.add(patient.getPatientId());
+        }
+
+        return new ResponseEntity<>(
+            new ApiResponse(true, "", patientIdsList), 
+            HttpStatus.OK
+        );  
     }
 
 }
