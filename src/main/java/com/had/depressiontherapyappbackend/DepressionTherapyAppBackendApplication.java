@@ -9,8 +9,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.ResponseEntity;
-// import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-// import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
@@ -24,9 +24,9 @@ import com.had.depressiontherapyappbackend.serviceImpl.UserServiceImpl;
 @SpringBootApplication
 @RestController
 @ComponentScan({"com.had.depressiontherapyappbackend"})
-public class DepressionTherapyAppBackendApplication { //implements CommandLineRunner {
+public class DepressionTherapyAppBackendApplication implements CommandLineRunner {
 
-	//private PasswordEncoder passwordEncoder;
+	private PasswordEncoder passwordEncoder;
 
 	@Autowired
 	private UserRepo userRepo;
@@ -59,21 +59,21 @@ public class DepressionTherapyAppBackendApplication { //implements CommandLineRu
 		}
 	}
 
-	// @Override
-	// public void run(String... args) throws Exception {
-	// 	// BCryptPasswordEncoder pwdEncoder = new BCryptPasswordEncoder();
-	// 	// System.out.println("\n-----------------------------------------\n");
-	// 	// System.out.println(pwdEncoder.encode("password"));
-	// 	// System.out.println("\n-----------------------------------------\n");
-	// 	// pwdEncoder = null;
+	@Override
+	public void run(String... args) throws Exception {
+		BCryptPasswordEncoder pwdEncoder = new BCryptPasswordEncoder();
+		System.out.println("\n-----------------------------------------\n");
+		System.out.println(pwdEncoder.encode("doctor"));
+		System.out.println("\n-----------------------------------------\n");
+		pwdEncoder = null;
 
-	// 	// ResponseEntity<?> response = this.userServiceImpl.createUserWithoutApi();
-	// 	// ApiResponse apiResponse = (ApiResponse) response.getBody();
-	// 	// System.out.println(apiResponse.getMessage());
+		// ResponseEntity<?> response = this.userServiceImpl.createUserWithoutApi();
+		// ApiResponse apiResponse = (ApiResponse) response.getBody();
+		// System.out.println(apiResponse.getMessage());
 
-	// 	// UserServiceImpl userServiceImpl = new UserServiceImpl(this.userRepo);
-	// 	// userServiceImpl.createUserWithoutApi();
-	// }
+		// UserServiceImpl userServiceImpl = new UserServiceImpl(this.userRepo);
+		// userServiceImpl.createUserWithoutApi();
+	}
 
 	
 

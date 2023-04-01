@@ -2,9 +2,11 @@ package com.had.depressiontherapyappbackend.entities;
 
 import javax.persistence.*;
 
-// import org.springframework.security.core.GrantedAuthority;
-// import org.springframework.security.core.authority.SimpleGrantedAuthority;
-// import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetails;
+
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
@@ -22,7 +24,7 @@ import java.util.stream.Collectors;
 @Entity
 @Table(name = "user")
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class User { // implements UserDetails {
+public class User implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -135,42 +137,42 @@ public class User { // implements UserDetails {
                 '}';
     }
 
-    // @Override
-    // public Collection<? extends GrantedAuthority> getAuthorities() {
-    //     Role userRole = this.userRole;
-    //     List<Role> roleList = new ArrayList<Role>();
-    //     roleList.add(userRole);
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        Role userRole = this.userRole;
+        List<Role> roleList = new ArrayList<Role>();
+        roleList.add(userRole);
 
-    //     //  = new ArrayList<SimpleGrantedAuthority>();
-    //     // authoritiesList.add(userRole.getRoleType());
-    //     List<SimpleGrantedAuthority> authoritiesList = roleList.stream().map((role) -> new SimpleGrantedAuthority(role.getRoleType())).collect(Collectors.toList());
+        //  = new ArrayList<SimpleGrantedAuthority>();
+        // authoritiesList.add(userRole.getRoleType());
+        List<SimpleGrantedAuthority> authoritiesList = roleList.stream().map((role) -> new SimpleGrantedAuthority(role.getRoleType())).collect(Collectors.toList());
 
-    //     return authoritiesList;
-    // }
+        return authoritiesList;
+    }
 
 
-    // @Override
-    // public String getUsername() {
-    //     return this.getEmail();
-    // }
+    @Override
+    public String getUsername() {
+        return this.getEmail();
+    }
 
-    // @Override
-    // public boolean isAccountNonExpired() {
-    //     return true;
-    // }
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
 
-    // @Override
-    // public boolean isAccountNonLocked() {
-    //     return true;
-    // }
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
 
-    // @Override
-    // public boolean isCredentialsNonExpired() {
-    //     return true;
-    // }
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
 
-    // @Override
-    // public boolean isEnabled() {
-    //     return true;
-    // }
+    @Override
+    public boolean isEnabled() {
+        return true;
+    }
 }
