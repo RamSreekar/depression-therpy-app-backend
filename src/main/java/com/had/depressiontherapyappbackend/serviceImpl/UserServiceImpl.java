@@ -12,6 +12,7 @@ import com.had.depressiontherapyappbackend.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.text.ParseException;
@@ -61,17 +62,12 @@ public class UserServiceImpl implements UserService {
         return responseUserObj;
     }
 
-    public static User responseUserToUserMapper(ResponseUser responseUser) {
-        User user = new User();
+    private String encryptPassword(String password) {
+        BCryptPasswordEncoder pwdEncoder = new BCryptPasswordEncoder();
+		String encryptedPassword = pwdEncoder.encode(password);
+		pwdEncoder = null;
 
-        user.setUserId(responseUser.userId); 
-        user.setEmail(responseUser.email);
-        user.setUserRole(responseUser.userRole);
-        user.setDemographics(responseUser.demographics);
-        user.setPatient(responseUser.patient);
-        user.setDoctor(responseUser.doctor);
-
-        return user;
+        return encryptedPassword;
     }
 
 
@@ -84,6 +80,9 @@ public class UserServiceImpl implements UserService {
 
         int roleId = user.getUserRole().getRoleId();
         Role userRole =  (Role) this.roleRepo.findById(roleId).get();
+
+        String encryptedPassword = encryptPassword(user.getPassword());
+        user.setPassword(encryptedPassword);
 
         user.setUserRole(userRole);
 
@@ -102,10 +101,6 @@ public class UserServiceImpl implements UserService {
         int userId = res.get(0).getUserId();
         
         User responseObj = res.get(0);
-        // User responseObj = new User();
-        // responseObj.setUserId(userId); 
-
-        //ResponseUser responseUserObj = userToResponseUserMapper(responseObj);
         
         return new ResponseEntity<>(
                 new ApiResponse(true, "User created", responseObj)
