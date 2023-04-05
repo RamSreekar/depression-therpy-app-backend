@@ -33,5 +33,6 @@ public class Question {
     @ManyToOne(targetEntity = Activity.class, cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "activity_id")
     private Activity activity;
+
     
 }

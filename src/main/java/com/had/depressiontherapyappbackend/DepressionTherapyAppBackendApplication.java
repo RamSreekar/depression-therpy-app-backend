@@ -63,7 +63,7 @@ public class DepressionTherapyAppBackendApplication implements CommandLineRunner
 	public void run(String... args) throws Exception {
 		BCryptPasswordEncoder pwdEncoder = new BCryptPasswordEncoder();
 		System.out.println("\n-----------------------------------------\n");
-		System.out.println(pwdEncoder.encode("patient"));
+		System.out.println(pwdEncoder.encode("admin"));
 		System.out.println("\n-----------------------------------------\n");
 		pwdEncoder = null;
 

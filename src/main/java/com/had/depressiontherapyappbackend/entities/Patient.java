@@ -44,6 +44,10 @@ public class Patient {
     @Column(name = "joining_date")
     private String joiningDate;
 
+    @OneToMany(mappedBy = "patient", cascade = CascadeType.ALL)
+    @JsonIgnore
+    private List<Answer> answerList;
+
     // public int getPatientId() {
     //     return patientId;
     // }
