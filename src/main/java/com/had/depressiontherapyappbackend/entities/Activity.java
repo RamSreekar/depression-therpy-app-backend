@@ -1,8 +1,11 @@
 package com.had.depressiontherapyappbackend.entities;
 
+import java.util.List;
+
 import javax.persistence.*;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import lombok.Data;
 
@@ -25,5 +28,9 @@ public class Activity {
 
     @Column(name = "description")
     private String description;
+
+    @OneToMany(mappedBy = "activity")
+    @JsonIgnore
+    private List<Question> questionList;
 
 }

@@ -53,7 +53,7 @@ public class DepressionTherapyAppBackendApplication implements CommandLineRunner
 		public void addCorsMappings(CorsRegistry registry) {
 			registry.addMapping("/**")
 			.allowedOrigins("*")
-			.allowedMethods("GET", "POST", "PUT", "DELETE")
+			.allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
 			.allowedHeaders("*");
 			//.allowCredentials(true);
 		}
@@ -63,7 +63,7 @@ public class DepressionTherapyAppBackendApplication implements CommandLineRunner
 	public void run(String... args) throws Exception {
 		BCryptPasswordEncoder pwdEncoder = new BCryptPasswordEncoder();
 		System.out.println("\n-----------------------------------------\n");
-		System.out.println(pwdEncoder.encode("doctor"));
+		System.out.println(pwdEncoder.encode("patient"));
 		System.out.println("\n-----------------------------------------\n");
 		pwdEncoder = null;
 

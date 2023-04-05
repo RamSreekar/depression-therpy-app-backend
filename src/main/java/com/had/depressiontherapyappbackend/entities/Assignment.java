@@ -37,4 +37,7 @@ public class Assignment {
     @JoinColumn(name = "item_id")
     private Item item;
 
+    @Column(name = "completed")
+    private boolean isCompleted;
+
 }
