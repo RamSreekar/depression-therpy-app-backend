@@ -86,4 +86,24 @@ public class DoctorServiceImpl implements DoctorService {
         );  
     }
 
+    @Override
+    public ResponseEntity<?> getDoctorDetails(int doctorId) {
+        Doctor requiredDoctor = (Doctor) doctorRepo.findById(doctorId).get();
+
+        ResponseEntity responseEntity = getDoctorUsingId(doctorId);
+        ApiResponse apiResponse = (ApiResponse) responseEntity.getBody();
+        boolean isDoctorExisting = apiResponse.getSuccess();
+
+        if(!isDoctorExisting) {
+            return responseEntity;
+        }
+
+        return new ResponseEntity<>(
+                new ApiResponse(true, "", requiredDoctor.getDoctorDetails()),
+                HttpStatus.OK
+        );
+    }
+
+
+
 }

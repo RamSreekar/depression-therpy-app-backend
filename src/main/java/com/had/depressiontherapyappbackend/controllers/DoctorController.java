@@ -26,4 +26,9 @@ public class DoctorController {
         return doctorServiceImpl.getPatientIdListofDoctor(doctorId);
     }
 
+    @GetMapping(path = "/{doctorId}/doctor-details")
+    public ResponseEntity<?> getDoctorDetails(@PathVariable("doctorId") int doctorId) {
+        return doctorServiceImpl.getDoctorDetails(doctorId);
+    }
+
 }
