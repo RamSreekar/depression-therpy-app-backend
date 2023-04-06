@@ -32,6 +32,10 @@ public class UserController {
     public ResponseEntity<?> getUser(@PathVariable("userId") int userId) {
         ApiResponse apiResponse = (ApiResponse) userServiceImpl.getUser(userId).getBody();
         User user = (User) apiResponse.getResponse();
+        if(user == null) {
+            return new ResponseEntity<>(apiResponse, HttpStatus.NOT_FOUND);
+        }
+        
         ResponseUser responseUser = UserServiceImpl.userToResponseUserMapper(user);
         
         return new ResponseEntity<>(responseUser, HttpStatus.OK);

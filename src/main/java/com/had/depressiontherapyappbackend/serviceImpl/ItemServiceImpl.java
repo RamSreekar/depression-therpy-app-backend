@@ -31,18 +31,12 @@ public class ItemServiceImpl implements ItemService {
         Optional<Item> queryResponse = itemRepo.findById(itemId);
 
         if(queryResponse.isEmpty()) {
-            return new ResponseEntity<>(
-                    new ApiResponse(false, "Item with given ID doesn't exist", null)
-                    , HttpStatus.OK
-            );
+            return new ResponseEntity<>("Item with given ID doesn't exist", HttpStatus.NOT_FOUND);
         }
 
         Item requiredItem = (Item) queryResponse.get();
 
-        return new ResponseEntity<>(
-                new ApiResponse(true, "Item exists!", requiredItem)
-                , HttpStatus.OK
-        );
+        return new ResponseEntity<>(requiredItem, HttpStatus.OK);
     }
 
     @Override

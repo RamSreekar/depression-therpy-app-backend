@@ -113,6 +113,7 @@ public class UserServiceImpl implements UserService {
         Optional<User> res = userRepo.findById(userId);
 
         if(res.isEmpty()) {
+            System.out.println("User doesn't exist! - 1");
             return new ResponseEntity<>(
                     new ApiResponse(false, "User with given ID doesn't exist", null)
                     , HttpStatus.OK
@@ -122,7 +123,13 @@ public class UserServiceImpl implements UserService {
         User reqUser = res.get();
 
 
-        //ResponseUser responseUserObj = userToResponseUserMapper(reqUser);
+        // if(reqUser == null) {
+        //     System.out.println("User doesn't exist! - 2");
+        //     return new ResponseEntity<>(
+        //             new ApiResponse(false, "User with given ID doesn't exist", null)
+        //             , HttpStatus.NOT_FOUND
+        //     );
+        // }
     
 
         return new ResponseEntity<>(

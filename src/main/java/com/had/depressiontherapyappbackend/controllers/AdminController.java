@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.had.depressiontherapyappbackend.entities.Doctor;
+import com.had.depressiontherapyappbackend.entities.Question;
 import com.had.depressiontherapyappbackend.entities.User;
 import com.had.depressiontherapyappbackend.serviceImpl.AdminServiceImpl;
 
@@ -42,6 +43,11 @@ public class AdminController {
         int patientId = request.get("patientId").asInt();
         int doctorId = request.get("doctorId").asInt();
         return adminServiceImpl.assignDoctorToPatient(patientId, doctorId);
+    }
+
+    @PostMapping(path = "/add-question")
+    public ResponseEntity<?> addQuestion(@RequestBody Question question) {
+        return adminServiceImpl.addQuestion(question);
     }
 
 }

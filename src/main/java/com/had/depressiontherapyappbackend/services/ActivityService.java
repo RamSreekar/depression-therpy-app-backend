@@ -8,4 +8,6 @@ public interface ActivityService {
     
     public ResponseEntity<?> getAllActivities();
 
+    public ResponseEntity<?> getAllQuestionsOfOneActivity(int activityId);
+
 }

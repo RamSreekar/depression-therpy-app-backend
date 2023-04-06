@@ -28,4 +28,13 @@ public class Item {
     @JsonManagedReference
     private Activity activity;
 
+    // @Override
+    // public String toString() {
+    //     return "Item{" +
+    //             "itemId=" + itemId +
+    //             ", type='" + type + '\'' +
+    //             ", adminId='" + admin.getAdminId() + 
+    //             '}';
+    // }
+
 }

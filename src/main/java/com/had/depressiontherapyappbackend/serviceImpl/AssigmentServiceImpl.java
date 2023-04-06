@@ -1,6 +1,7 @@
 package com.had.depressiontherapyappbackend.serviceImpl;
 
 import java.util.List;
+import java.util.Optional;
 
 import javax.print.Doc;
 
@@ -74,14 +75,6 @@ public class AssigmentServiceImpl implements AssignmentService {
 
         Item requiredItem = (Item) apiResponse.getResponse();
 
-        // System.out.println();
-        // System.out.println(requiredPatient);
-        // System.out.println();
-        // System.out.println(requiredDoctor);
-        // System.out.println();
-        // System.out.println(requiredItem);
-        // System.out.println();
-
         Assignment assignment = new Assignment();
         assignment.setPatient(requiredPatient);
         assignment.setDoctor(requiredDoctor);
@@ -108,5 +101,38 @@ public class AssigmentServiceImpl implements AssignmentService {
             new ApiResponse(true, "Assignment created!", null),
             HttpStatus.OK
         );
+    }
+
+    private ResponseEntity<?> getAssignmentById(int assignmentId) {
+        Optional<Assignment> queryResponse = assignmentRepo.findById(assignmentId);
+
+        if(queryResponse.isEmpty()) {
+            return new ResponseEntity<>("Invalid Assignment Id!", HttpStatus.NOT_FOUND);
+        }
+
+        Assignment requiredAssignment = queryResponse.get();
+
+        System.out.println("\nAssignment :");
+        System.out.println(requiredAssignment);
+        System.out.println();
+
+        return new ResponseEntity<>(requiredAssignment, HttpStatus.OK);
+    }
+
+    @Override
+    public ResponseEntity<?> markAssignmentAsCompleted(int assignmentId) {
+        ResponseEntity responseEntity = getAssignmentById(assignmentId);
+        HttpStatus httpStatus = responseEntity.getStatusCode();
+        int httpStatusCode = httpStatus.value();
+        
+        if(httpStatusCode != 200) 
+            return responseEntity;
+
+        Assignment requiredAssignment = (Assignment) responseEntity.getBody();
+        requiredAssignment.setCompleted(true);
+
+        assignmentRepo.save(requiredAssignment);
+
+        return new ResponseEntity<>("Assignment marked as completed!", HttpStatus.OK);
     }
 }

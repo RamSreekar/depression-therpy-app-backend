@@ -14,4 +14,6 @@ public interface AssignmentService {
 
     public ResponseEntity<?> addListOfAssignmnets(List<JsonNode> requestList);
 
+    public ResponseEntity<?> markAssignmentAsCompleted(int activityId);
+
 }

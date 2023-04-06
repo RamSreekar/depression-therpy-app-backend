@@ -33,4 +33,13 @@ public class Activity {
     @JsonIgnore
     private List<Question> questionList;
 
+    @Override
+    public String toString() {
+        return "Activity{" +
+                "activityId=" + activityId +
+                ", name='" + name + '\'' +
+                ", description='" + description + 
+                '}';
+    }
+
 }

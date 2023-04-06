@@ -1,16 +1,22 @@
 package com.had.depressiontherapyappbackend.serviceImpl;
 
 import com.fasterxml.jackson.databind.JsonNode;
+import com.had.depressiontherapyappbackend.entities.Activity;
 import com.had.depressiontherapyappbackend.entities.Admin;
 import com.had.depressiontherapyappbackend.entities.Doctor;
+import com.had.depressiontherapyappbackend.entities.Item;
 import com.had.depressiontherapyappbackend.entities.Patient;
+import com.had.depressiontherapyappbackend.entities.Question;
 import com.had.depressiontherapyappbackend.entities.Role;
 import com.had.depressiontherapyappbackend.entities.User;
 import com.had.depressiontherapyappbackend.payloads.ApiResponse;
 import com.had.depressiontherapyappbackend.payloads.ResponseUser;
+import com.had.depressiontherapyappbackend.repositories.ActivityRepo;
 import com.had.depressiontherapyappbackend.repositories.AdminRepo;
 import com.had.depressiontherapyappbackend.repositories.DoctorRepo;
+import com.had.depressiontherapyappbackend.repositories.ItemRepo;
 import com.had.depressiontherapyappbackend.repositories.PatientRepo;
+import com.had.depressiontherapyappbackend.repositories.QuestionRepo;
 import com.had.depressiontherapyappbackend.repositories.UserRepo;
 import com.had.depressiontherapyappbackend.services.AdminService;
 
@@ -37,6 +43,12 @@ public class AdminServiceImpl implements AdminService {
     private DoctorRepo doctorRepo;
 
     private AdminRepo adminRepo;
+
+    @Autowired
+    private QuestionRepo questionRepo;
+
+    @Autowired
+    private ItemRepo itemRepo;
 
     @Autowired
     private UserServiceImpl userServiceImpl;
@@ -143,5 +155,23 @@ public class AdminServiceImpl implements AdminService {
                 new ApiResponse(true, "Doctor assigned to patient.", null)
                 , HttpStatus.OK
         );
+    }
+
+    @Override
+    public ResponseEntity<?> addQuestion(Question request) {
+        int activityId = request.getActivity().getActivityId();
+        Item requiredItem = this.itemRepo.findById(activityId).get();
+
+        System.out.println("\nItem : ");
+        System.out.println(requiredItem);
+        System.out.println();
+
+        Activity requiredActivity = requiredItem.getActivity();
+
+        request.setActivity(requiredActivity);
+
+        this.questionRepo.save(request);
+
+        return new ResponseEntity<>("Question added!", HttpStatus.OK);
     }
 }
