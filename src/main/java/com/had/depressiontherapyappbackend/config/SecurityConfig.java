@@ -15,6 +15,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.DefaultSecurityFilterChain;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
 import com.had.depressiontherapyappbackend.security.CustomUserDetailsService;
 import com.had.depressiontherapyappbackend.security.JwtAuthenticationEntryPoint;
@@ -22,6 +23,7 @@ import com.had.depressiontherapyappbackend.security.JwtAuthenticationFilter;
 
 @Configuration
 @EnableWebSecurity
+@EnableWebMvc
 public class SecurityConfig {
 
     @Autowired
@@ -33,6 +35,14 @@ public class SecurityConfig {
     @Autowired
     private JwtAuthenticationFilter jwtAuthenticationFilter;
 
+    public static final String[] PUBLIC_URLS = {
+        "/auth/login",
+        "/v3/api-docs",
+        "/v2/api-docs",
+        "/swagger-resources/**",
+        "/swagger-ui/**",
+        "/webjars/**"
+    };
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -42,7 +52,7 @@ public class SecurityConfig {
         .and()
         .csrf().disable()
         .authorizeHttpRequests()
-        .antMatchers(HttpMethod.POST, "/auth/login").permitAll()
+        .antMatchers(PUBLIC_URLS).permitAll()
         .anyRequest()
         .authenticated()
         .and()
