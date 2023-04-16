@@ -27,7 +27,7 @@ public class AdminController {
     public AdminController(AdminServiceImpl adminServiceImpl) {
         this.adminServiceImpl = adminServiceImpl;
     }
-
+ 
     @PostMapping(path = "/createAdmin")
     public ResponseEntity<?> createAdmin(@RequestBody User user) {
         return adminServiceImpl.createAdmin(user);

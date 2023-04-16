@@ -38,6 +38,10 @@ public class Patient {
     @JsonIgnore
     private List<Assignment> assignmentList;
 
+    @OneToMany(mappedBy = "patient", cascade = CascadeType.ALL)
+    @JsonIgnore
+    private List<Mood> moodList;
+
     @Column(name = "wants_doc")
     private boolean wantsDoc;
  

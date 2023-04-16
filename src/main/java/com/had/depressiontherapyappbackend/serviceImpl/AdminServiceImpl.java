@@ -93,7 +93,7 @@ public class AdminServiceImpl implements AdminService {
                 , HttpStatus.OK
         );
     }
-
+ 
 
     @Override
     public ResponseEntity<?> registerDoctor(Doctor doctor) throws Exception {
