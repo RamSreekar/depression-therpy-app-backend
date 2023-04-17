@@ -44,6 +44,13 @@ public class DoctorServiceImpl implements DoctorService {
     }
 
     @Override
+    public ResponseEntity<?> getAllDoctorsList() {
+        List<Doctor> allDoctorsList = doctorRepo.findAll();
+
+        return new ResponseEntity<>(allDoctorsList, HttpStatus.OK);
+    }
+
+    @Override
     public ResponseEntity<?> getPatientListOfDoctor(int doctorId) {
         Doctor requiredDoctor = (Doctor) doctorRepo.findById(doctorId).get();
 

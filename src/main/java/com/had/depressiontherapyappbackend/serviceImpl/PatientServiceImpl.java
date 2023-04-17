@@ -1,5 +1,6 @@
 package com.had.depressiontherapyappbackend.serviceImpl;
 
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -15,6 +16,7 @@ import com.had.depressiontherapyappbackend.payloads.ApiResponse;
 import com.had.depressiontherapyappbackend.repositories.MoodRepo;
 import com.had.depressiontherapyappbackend.repositories.PatientRepo;
 import com.had.depressiontherapyappbackend.services.PatientService;
+
 
 @Service
 public class PatientServiceImpl implements PatientService {
@@ -46,6 +48,13 @@ public class PatientServiceImpl implements PatientService {
                     new ApiResponse(true, "Patient exists!", patient)
                     , HttpStatus.OK
             );
+    }
+
+    @Override
+    public ResponseEntity<?> getAllPatientsList() {
+        List<Patient> allPatientsList = patientRepo.findAll();
+        
+        return new ResponseEntity<>(allPatientsList, HttpStatus.OK);
     }
 
     @Override

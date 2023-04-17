@@ -10,6 +10,8 @@ import com.had.depressiontherapyappbackend.entities.Mood;
 @Repository
 public interface PatientService {
     
+    public ResponseEntity<?> getAllPatientsList();
+    
     public ResponseEntity<?> getPatientMedicalHistory(int patientId);
 
     public ResponseEntity<?> getAssignmentList(int patientId);

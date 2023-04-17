@@ -31,4 +31,9 @@ public class DoctorController {
         return doctorServiceImpl.getDoctorDetails(doctorId);
     }
 
+    @GetMapping(path = "/get-all")
+    public ResponseEntity<?> getAllDoctorsList() {
+        return doctorServiceImpl.getAllDoctorsList();
+    }
+
 }
