@@ -33,7 +33,7 @@ public class AdminController {
         return adminServiceImpl.createAdmin(user);
     }
 
-    @PostMapping(path = "/registerDoctor")
+    @PostMapping(path = "/register-doctor")
     public ResponseEntity<?> registerDoctor(@RequestBody Doctor doctor) throws Exception {
         return adminServiceImpl.registerDoctor(doctor);
     }

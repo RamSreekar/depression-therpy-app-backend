@@ -87,5 +87,23 @@ public class AnswerServiceImpl implements AnswerService {
 
         return new ResponseEntity<>("Answers saved!", HttpStatus.OK);
     }
+
+    public ResponseEntity<?> getAllAnswers() {
+        List<Answer> answerList = answerRepo.findAll();
+
+        return new ResponseEntity<>(answerList, HttpStatus.OK);
+    }
+
+    // public ResponseEntity<?> findAnswerByPatientIdAndQuestionId(int patientId, int questionId) {
+    //     Answer requiredAnswer = answerRepo.findByPatientIdAndQuestionId(patientId, questionId);
+    //     if(requiredAnswer == null) {
+    //         return new ResponseEntity<>(Map.of("message", "Answer doesn't exist with given patient id and question id"), HttpStatus.NOT_FOUND);
+    //     }
+
+    //     //Answer requiredAnswer = (Answer) queryResponse.get();
+
+        
+    //     return new ResponseEntity<>(requiredAnswer, HttpStatus.OK);
+    // }
     
 }

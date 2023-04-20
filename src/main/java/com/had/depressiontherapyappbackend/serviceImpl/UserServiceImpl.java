@@ -74,9 +74,11 @@ public class UserServiceImpl implements UserService {
     @Override
     public ResponseEntity<?> createUser(User user) {
         ResponseEntity<?> emailCheck = checkEmail(user);
-        ApiResponse apiResponse = (ApiResponse) emailCheck.getBody();
-        boolean emailExists = apiResponse.getSuccess();
-        if(!emailExists) return emailCheck;
+        int statusCode = emailCheck.getStatusCode().value();
+        // ApiResponse apiResponse = (ApiResponse) emailCheck.getBody();
+        // boolean emailExists = apiResponse.getSuccess();
+        // if(!emailExists) return emailCheck;
+        if(statusCode != 200) return emailCheck;
 
         int roleId = user.getUserRole().getRoleId();
         Role userRole =  (Role) this.roleRepo.findById(roleId).get();
@@ -102,10 +104,7 @@ public class UserServiceImpl implements UserService {
         
         User responseObj = res.get(0);
         
-        return new ResponseEntity<>(
-                new ApiResponse(true, "User created", responseObj)
-                , HttpStatus.OK
-        );
+        return new ResponseEntity<>(Map.of("userId", responseObj.getUserId()), HttpStatus.OK);
     }
 
     @Override
@@ -143,13 +142,12 @@ public class UserServiceImpl implements UserService {
         ApiResponse apiResponse;
         List<User> res = userRepo.findByEmail(user.getEmail());
 
-        if(res.size() == 0)
-            apiResponse = new ApiResponse(true, "Email is new", null);
+        if(res.size() != 0)
+            return new ResponseEntity<>(Map.of("message", "Email exists!"), HttpStatus.FOUND);
         else
             return new ResponseEntity<>(Map.of("token", "randomtokenjassudurgajwt"), HttpStatus.OK);
             //apiResponse = new ApiResponse(false, "Email already exists!", Map.of("token", "randomtokenjassudurgajwt"));
 
-        return new ResponseEntity<>(apiResponse, HttpStatus.OK);
     }
 
     public ResponseEntity<?> login(User user) {

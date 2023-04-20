@@ -3,6 +3,7 @@ package com.had.depressiontherapyappbackend.serviceImpl;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Stream;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -10,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.fasterxml.jackson.databind.JsonNode;
+import com.had.depressiontherapyappbackend.entities.Answer;
 import com.had.depressiontherapyappbackend.entities.Mood;
 import com.had.depressiontherapyappbackend.entities.Patient;
 import com.had.depressiontherapyappbackend.payloads.ApiResponse;
@@ -107,6 +109,45 @@ public class PatientServiceImpl implements PatientService {
 
         return new ResponseEntity<>(patient.getMoodList(), HttpStatus.OK);
     }
+
+    public ResponseEntity<?> getAnswerList(int patientId) {
+        Optional<Patient> queryResponse = patientRepo.findById(patientId);
+
+        if(queryResponse.isEmpty()) {
+            return new ResponseEntity<>(Map.of("message", "Patient with given ID doesn't exist"), HttpStatus.NOT_FOUND);
+        }
+
+        Patient patient = (Patient) queryResponse.get();
+
+        List<Answer> answerList = patient.getAnswerList();
+
+        return new ResponseEntity<>(answerList, HttpStatus.OK);
+    }
+
+    public ResponseEntity<?> getAnswerWithPatientIdAndQuestionId(int patientId, int questionId) {
+        Optional<Patient> queryResponse = patientRepo.findById(patientId);
+
+        if(queryResponse.isEmpty()) {
+            return new ResponseEntity<>(Map.of("message", "Invalid Patient Id!"), HttpStatus.NOT_FOUND);
+        }
+
+        //Answer requiredAnswer = new Answer();
+        
+        Patient patient = (Patient) queryResponse.get();
+
+        List<Answer> answerList = patient.getAnswerList();
+
+
+        for(int i=0; i<answerList.size(); i++) {
+            Answer answer = answerList.get(i);
+            if(answer.getQuestion().getQuestionId() == questionId) {
+                return new ResponseEntity<>(Map.of("choice", answer.getChoice()), HttpStatus.OK);
+            }
+        }
+
+        return new ResponseEntity<>(Map.of("message", "Invalid Question Id!"), HttpStatus.NOT_FOUND);
+    }
+
 
     @Override
     public ResponseEntity<?> setPatientMood(JsonNode request) {

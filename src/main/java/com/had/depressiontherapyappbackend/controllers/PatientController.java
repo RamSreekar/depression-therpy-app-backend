@@ -46,4 +46,15 @@ public class PatientController {
     public ResponseEntity<?> setPatientMood(@RequestBody JsonNode request) {
         return patientServiceImpl.setPatientMood(request);
     }
+
+    @GetMapping(path = "/{patientId}/answers")
+    public ResponseEntity<?> getAnswerList(@PathVariable("patientId") int patientId) {
+        return patientServiceImpl.getAnswerList(patientId);
+    }
+
+    @GetMapping(path = "/{patientId}/answers/{questionId}")
+    public ResponseEntity<?> getAnswerWithPatientIdAndDoctorId(@PathVariable("patientId") int patientId, 
+                                            @PathVariable("questionId") int questionId) {
+        return patientServiceImpl.getAnswerWithPatientIdAndQuestionId(patientId, questionId);
+    }
 }

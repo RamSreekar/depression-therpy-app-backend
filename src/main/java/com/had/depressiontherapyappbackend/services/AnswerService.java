@@ -10,4 +10,5 @@ public interface AnswerService {
     
     public ResponseEntity<?> saveAnswers(Map<String, Object> request);
 
+    //public ResponseEntity<?> findAnswerByPatientIdAndQuestionId(int patientId, int questionId);
 }
