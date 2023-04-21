@@ -51,12 +51,12 @@ public class UserController {
         return userServiceImpl.login(user);
     }
 
-    @PostMapping(path = "/addPatient")
+    @PostMapping(path = "/add-patient")
     public ResponseEntity<?> addPatient(@RequestBody Patient patient) throws Exception {
         return userServiceImpl.addPatient(patient);
     }
 
-    @PostMapping(path = "/registerDoctor")
+    @PostMapping(path = "/register-doctor")
     public ResponseEntity<?> registerPatient(Doctor doctor) throws Exception {
         return userServiceImpl.registerDoctor(doctor);
     }
