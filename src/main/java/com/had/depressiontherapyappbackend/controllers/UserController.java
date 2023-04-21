@@ -51,7 +51,7 @@ public class UserController {
         return userServiceImpl.login(user);
     }
 
-    @PostMapping(path = "/addPatient")
+    @PostMapping(path = "/add-patient")
     public ResponseEntity<?> addPatient(@RequestBody Patient patient) throws Exception {
         return userServiceImpl.addPatient(patient);
     }
