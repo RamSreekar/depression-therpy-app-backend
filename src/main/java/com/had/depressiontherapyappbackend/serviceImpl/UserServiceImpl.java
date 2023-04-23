@@ -252,6 +252,13 @@ public class UserServiceImpl implements UserService {
         );
     }
 
+    public ResponseEntity<?> getAllDoctors() {
+        int DOCTOR_ROLE_ID = 2;
+        List<UserRepo.UserProjection> doctorList = userRepo.findByRoleId(DOCTOR_ROLE_ID);
+
+        return new ResponseEntity<>(doctorList, HttpStatus.OK);
+    }
+
     public void createUserWithoutApi() {
         int roleId = 3;
         User user = new User();

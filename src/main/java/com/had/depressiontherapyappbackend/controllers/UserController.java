@@ -71,4 +71,9 @@ public class UserController {
     public ResponseEntity<?> getDemographicsOfUser(@PathVariable("userId") int userId) {
         return userServiceImpl.getDemographicsOfUser(userId);
     }
+    
+    @GetMapping(path = "/get-doctors")
+    public ResponseEntity<?> getAllDoctors() {
+        return userServiceImpl.getAllDoctors();
+    }
 }
