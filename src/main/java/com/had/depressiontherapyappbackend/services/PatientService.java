@@ -19,4 +19,6 @@ public interface PatientService {
     public ResponseEntity<?> setPatientMood(JsonNode request);
 
     public ResponseEntity<?> getMoodList(int patientId);
+
+    public ResponseEntity<?> updateFcmToken(int patientId, JsonNode request);
 }

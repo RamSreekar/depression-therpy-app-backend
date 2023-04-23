@@ -15,7 +15,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class JwtTokenHelper {
     
-    public static final long JWT_TOKEN_VALIDITY_PERIOD_IN_SECS = 60 * 60;
+    public static final long JWT_TOKEN_VALIDITY_PERIOD_IN_SECS = 60 * 60 * 12;
 
     private String secret = "JwtTokenKey";
 

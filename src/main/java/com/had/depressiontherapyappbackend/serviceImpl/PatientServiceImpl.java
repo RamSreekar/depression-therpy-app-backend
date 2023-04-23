@@ -174,4 +174,23 @@ public class PatientServiceImpl implements PatientService {
         return new ResponseEntity<>("Patient mood has been set!", HttpStatus.OK);
     }
 
+    @Override
+    public ResponseEntity<?> updateFcmToken(int patientId, JsonNode request) {
+
+        String fcmToken = request.get("fcmToken").asText();
+
+        Optional<Patient> queryResponse = patientRepo.findById(patientId);
+
+
+        if(queryResponse.isEmpty()) {
+            return new ResponseEntity<>(Map.of("message", "Patient with given ID doesn't exist"), HttpStatus.NOT_FOUND);
+        }
+
+        Patient patient = (Patient) queryResponse.get();
+
+        patient.setFcmToken(fcmToken);
+        patientRepo.save(patient);
+
+        return new ResponseEntity<>("Patient fcm token has been updated!", HttpStatus.OK);
+    }
 }
