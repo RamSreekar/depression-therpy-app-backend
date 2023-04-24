@@ -9,6 +9,7 @@ import com.had.depressiontherapyappbackend.serviceImpl.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 
@@ -61,6 +62,7 @@ public class UserController {
         return userServiceImpl.registerDoctor(doctor);
     }
 
+    @PreAuthorize("hasAnyAuthority('PATIENT', 'DOCTOR')")
     @GetMapping(path = "/{email}")
     public ResponseEntity<?> getUserFromEmail(@PathVariable("email") String email) {
         System.out.println("\n"+email+"\n");

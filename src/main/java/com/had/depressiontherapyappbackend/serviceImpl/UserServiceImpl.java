@@ -83,6 +83,10 @@ public class UserServiceImpl implements UserService {
         int roleId = user.getUserRole().getRoleId();
         Role userRole =  (Role) this.roleRepo.findById(roleId).get();
 
+        System.out.println();
+        System.out.println(user);
+        System.out.println();
+
         String encryptedPassword = encryptPassword(user.getPassword());
         user.setPassword(encryptedPassword);
 

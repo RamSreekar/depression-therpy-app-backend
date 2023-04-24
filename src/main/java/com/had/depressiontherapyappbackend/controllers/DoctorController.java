@@ -2,6 +2,7 @@ package com.had.depressiontherapyappbackend.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -21,11 +22,13 @@ public class DoctorController {
         this.doctorServiceImpl = doctorServiceImpl;
     }
 
+    @PreAuthorize("hasAuthority('DOCTOR')")
     @GetMapping(path = "/{doctorId}/patients")
     public ResponseEntity<?> getPatientListOfDoctor(@PathVariable("doctorId") int doctorId) {
         return doctorServiceImpl.getPatientIdListofDoctor(doctorId);
     }
 
+    @PreAuthorize("hasAuthority('DOCTOR')")
     @GetMapping(path = "/{doctorId}/doctor-details")
     public ResponseEntity<?> getDoctorDetails(@PathVariable("doctorId") int doctorId) {
         return doctorServiceImpl.getDoctorDetails(doctorId);
