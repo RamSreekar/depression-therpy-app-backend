@@ -64,14 +64,14 @@ public class AssigmentServiceImpl implements AssignmentService {
         Doctor requiredDoctor = (Doctor) apiResponse.getResponse();
 
         responseEntity = this.itemServiceImpl.getItemUsingId(itemId);
-        apiResponse = (ApiResponse) responseEntity.getBody();
-        successStatus = apiResponse.getSuccess();
+        
+        int statusCode = responseEntity.getStatusCode().value();
 
-        if(successStatus = false) {
+        if(statusCode != 200) {
             return responseEntity;
         }
 
-        Item requiredItem = (Item) apiResponse.getResponse();
+        Item requiredItem = (Item) responseEntity.getBody();
 
         Assignment assignment = new Assignment();
         assignment.setPatient(requiredPatient);
