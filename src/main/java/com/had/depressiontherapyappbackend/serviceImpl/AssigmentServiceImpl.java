@@ -3,6 +3,9 @@ package com.had.depressiontherapyappbackend.serviceImpl;
 import java.util.List;
 import java.util.Optional;
 
+import com.google.firebase.messaging.FirebaseMessaging;
+import com.google.firebase.messaging.Message;
+import com.google.firebase.messaging.Notification;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -94,6 +97,13 @@ public class AssigmentServiceImpl implements AssignmentService {
             request = requestList.get(i);
             createAssignment(request);
         }
+
+        //get this particular patient device's fcmToken from db and use in setToken() fn
+//        FirebaseMessaging.getInstance().sendAsync(Message.builder()
+//                .setNotification(new Notification("Title", "Message"))
+//                .setToken("<device registration token>")
+//                .build());
+
 
         return new ResponseEntity<>(
             new ApiResponse(true, "Assignment created!", null),

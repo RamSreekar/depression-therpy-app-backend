@@ -5,6 +5,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -62,5 +63,10 @@ public class PatientController {
     public ResponseEntity<?> getAnswerWithPatientIdAndDoctorId(@PathVariable("patientId") int patientId, 
                                             @PathVariable("questionId") int questionId) {
         return patientServiceImpl.getAnswerWithPatientIdAndQuestionId(patientId, questionId);
+    }
+
+    @PutMapping(path = "/{patientId}/fcm-token")
+    public ResponseEntity<?> updateFcmToken(@PathVariable("patientId") int patientId, @RequestBody JsonNode request) {
+        return patientServiceImpl.updateFcmToken(patientId, request);
     }
 }

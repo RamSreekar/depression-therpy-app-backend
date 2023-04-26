@@ -1,5 +1,8 @@
 package com.had.depressiontherapyappbackend;
 
+import com.google.auth.oauth2.GoogleCredentials;
+import com.google.firebase.FirebaseApp;
+import com.google.firebase.FirebaseOptions;
 import org.apache.catalina.connector.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
@@ -20,6 +23,9 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter
 import com.had.depressiontherapyappbackend.payloads.ApiResponse;
 import com.had.depressiontherapyappbackend.repositories.UserRepo;
 import com.had.depressiontherapyappbackend.serviceImpl.UserServiceImpl;
+
+import java.io.FileInputStream;
+import java.io.InputStream;
 
 @SpringBootApplication
 @RestController
@@ -66,6 +72,15 @@ public class DepressionTherapyAppBackendApplication implements CommandLineRunner
 		System.out.println(pwdEncoder.encode("admin"));
 		System.out.println("\n-----------------------------------------\n");
 		pwdEncoder = null;
+
+//		InputStream serviceAccount = new FileInputStream("src/main/resources/better-u-1bfee-5b2cf3de3022.json");
+//
+//		FirebaseOptions options = new FirebaseOptions.Builder()
+//				.setCredentials(GoogleCredentials.fromStream(serviceAccount))
+//				.build();
+//
+//		FirebaseApp.initializeApp(options);
+
 
 		// ResponseEntity<?> response = this.userServiceImpl.createUserWithoutApi();
 		// ApiResponse apiResponse = (ApiResponse) response.getBody();
