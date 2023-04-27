@@ -52,17 +52,17 @@ public class UserController {
         return userServiceImpl.login(user);
     }
 
-    @PostMapping(path = "/addPatient")
+    @PostMapping(path = "/add-patient")
     public ResponseEntity<?> addPatient(@RequestBody Patient patient) throws Exception {
         return userServiceImpl.addPatient(patient);
     }
 
-    @PostMapping(path = "/registerDoctor")
+    @PostMapping(path = "/register-doctor")
     public ResponseEntity<?> registerPatient(Doctor doctor) throws Exception {
         return userServiceImpl.registerDoctor(doctor);
     }
 
-    @PreAuthorize("hasAnyAuthority('PATIENT', 'DOCTOR')")
+    @PreAuthorize("hasAnyAuthority('PATIENT', 'DOCTOR', 'ADMIN')")
     @GetMapping(path = "/{email}")
     public ResponseEntity<?> getUserFromEmail(@PathVariable("email") String email) {
         System.out.println("\n"+email+"\n");

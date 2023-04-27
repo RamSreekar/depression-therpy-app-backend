@@ -20,7 +20,7 @@ public class ActivityController {
         this.activityServiceImpl = activityServiceImpl;
     }
 
-    @PreAuthorize("hasAuthority('DOCTOR')")
+    @PreAuthorize("hasAnyAuthority('DOCTOR', 'ADMIN')")
     @GetMapping(path = "")
     public ResponseEntity<?> getAllActivities() {
         return activityServiceImpl.getAllActivities();
