@@ -1,6 +1,7 @@
 package com.had.depressiontherapyappbackend.controllers;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -19,11 +20,13 @@ public class ActivityController {
         this.activityServiceImpl = activityServiceImpl;
     }
 
+    @PreAuthorize("hasAnyAuthority('DOCTOR', 'ADMIN')")
     @GetMapping(path = "")
     public ResponseEntity<?> getAllActivities() {
         return activityServiceImpl.getAllActivities();
     }
 
+    @PreAuthorize("hasAuthority('DOCTOR')")
     @GetMapping(path = "/{activityId}/questions")
     public ResponseEntity<?> getAllQuestionsOfOneActivity(@PathVariable("activityId") int activityId) {
         return activityServiceImpl.getAllQuestionsOfOneActivity(activityId);

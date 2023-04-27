@@ -18,10 +18,6 @@ public class Role {
     @Column(name = "role_type")
     private String roleType;
 
-//    @OneToMany(mappedBy = "userRole")
-//    @JsonBackReference
-//    private List<User> users;
-
     public int getRoleId() {
         return roleId;
     }
@@ -37,14 +33,6 @@ public class Role {
     public void setRoleType(String roleType) {
         this.roleType = roleType;
     }
-
-//    public List<User> getUsers() {
-//        return users;
-//    }
-//
-//    public void setUsers(List<User> users) {
-//        this.users = users;
-//    }
 
     @Override
     public String toString() {

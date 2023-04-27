@@ -52,6 +52,9 @@ public class Patient {
     @JsonIgnore
     private List<Answer> answerList;
 
+    @Column(name= "fcm_token", nullable = true)
+    private String fcmToken;
+
     // public int getPatientId() {
     //     return patientId;
     // }
@@ -91,6 +94,7 @@ public class Patient {
                 //", user=" + user +
                 ", wantsDoc=" + wantsDoc +
                 ", joiningDate=" + joiningDate +
+                ", fcmToken=" + fcmToken +
                 '}';
     }
 }

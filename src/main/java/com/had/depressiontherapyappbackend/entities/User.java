@@ -8,11 +8,12 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.had.depressiontherapyappbackend.entities.Role;
 import net.bytebuddy.build.ToStringPlugin;
-
+ 
 import java.lang.annotation.Target;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -35,6 +36,7 @@ public class User implements UserDetails {
     private String email;
 
     @Column(name = "password", nullable = false)
+    // @JsonIgnore
     private String password;
 
     @ManyToOne(targetEntity = Role.class, cascade = CascadeType.ALL, fetch = FetchType.EAGER)
@@ -77,7 +79,6 @@ public class User implements UserDetails {
         this.email = email;
     }
 
-    //@Override
     public String getPassword() {
         return password;
     }
@@ -139,13 +140,31 @@ public class User implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        Role userRole = this.userRole;
-        List<Role> roleList = new ArrayList<Role>();
-        roleList.add(userRole);
+        // Role userRole = this.userRole;
+        // List<Role> roleList = new ArrayList<Role>();
+        // roleList.add(userRole);
 
-        //  = new ArrayList<SimpleGrantedAuthority>();
-        // authoritiesList.add(userRole.getRoleType());
-        List<SimpleGrantedAuthority> authoritiesList = roleList.stream().map((role) -> new SimpleGrantedAuthority(role.getRoleType())).collect(Collectors.toList());
+        // //  = new ArrayList<SimpleGrantedAuthority>();
+        // // authoritiesList.add(userRole.getRoleType());
+        // List<SimpleGrantedAuthority> authoritiesList = roleList.stream().map((role) -> new SimpleGrantedAuthority(role.getRoleType())).collect(Collectors.toList());
+
+        // return authoritiesList;
+
+        List<Role> roles = new ArrayList<>();
+        roles.add(this.getUserRole());
+
+        System.out.println();
+        System.out.println(roles.get(0).getRoleType());
+        System.out.println();
+
+        // Convert Role objects to GrantedAuthority objects
+        List<SimpleGrantedAuthority> authoritiesList = roles.stream()
+                .map(role -> new SimpleGrantedAuthority(role.getRoleType()))
+                .collect(Collectors.toList());
+
+        System.out.println();
+        System.out.println(authoritiesList);
+        System.out.println();
 
         return authoritiesList;
     }

@@ -83,6 +83,10 @@ public class UserServiceImpl implements UserService {
         int roleId = user.getUserRole().getRoleId();
         Role userRole =  (Role) this.roleRepo.findById(roleId).get();
 
+        System.out.println();
+        System.out.println(user);
+        System.out.println();
+
         String encryptedPassword = encryptPassword(user.getPassword());
         user.setPassword(encryptedPassword);
 
@@ -250,6 +254,13 @@ public class UserServiceImpl implements UserService {
                 new ApiResponse(true, "Patient details added.", userToResponseUserMapper(user))
                 , HttpStatus.OK
         );
+    }
+
+    public ResponseEntity<?> getAllDoctors() {
+        int DOCTOR_ROLE_ID = 2;
+        List<UserRepo.UserProjection> doctorList = userRepo.findByRoleId(DOCTOR_ROLE_ID);
+
+        return new ResponseEntity<>(doctorList, HttpStatus.OK);
     }
 
     public void createUserWithoutApi() {

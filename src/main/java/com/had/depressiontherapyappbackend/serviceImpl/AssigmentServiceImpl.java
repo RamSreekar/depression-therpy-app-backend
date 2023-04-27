@@ -1,8 +1,12 @@
 package com.had.depressiontherapyappbackend.serviceImpl;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
+import com.google.firebase.messaging.FirebaseMessaging;
+import com.google.firebase.messaging.Message;
+import com.google.firebase.messaging.Notification;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,6 +19,7 @@ import com.had.depressiontherapyappbackend.entities.Item;
 import com.had.depressiontherapyappbackend.entities.Patient;
 import com.had.depressiontherapyappbackend.payloads.ApiResponse;
 import com.had.depressiontherapyappbackend.repositories.AssignmentRepo;
+import com.had.depressiontherapyappbackend.repositories.PatientRepo;
 import com.had.depressiontherapyappbackend.services.AssignmentService;
 
 @Service
@@ -30,6 +35,9 @@ public class AssigmentServiceImpl implements AssignmentService {
 
     @Autowired
     private ItemServiceImpl itemServiceImpl;
+
+    @Autowired
+    private PatientRepo patientRepo;
 
     @Autowired
     public AssigmentServiceImpl(AssignmentRepo assignmentRepo) {
@@ -64,14 +72,14 @@ public class AssigmentServiceImpl implements AssignmentService {
         Doctor requiredDoctor = (Doctor) apiResponse.getResponse();
 
         responseEntity = this.itemServiceImpl.getItemUsingId(itemId);
-        apiResponse = (ApiResponse) responseEntity.getBody();
-        successStatus = apiResponse.getSuccess();
+        
+        int statusCode = responseEntity.getStatusCode().value();
 
-        if(successStatus = false) {
+        if(statusCode != 200) {
             return responseEntity;
         }
 
-        Item requiredItem = (Item) apiResponse.getResponse();
+        Item requiredItem = (Item) responseEntity.getBody();
 
         Assignment assignment = new Assignment();
         assignment.setPatient(requiredPatient);
@@ -94,6 +102,35 @@ public class AssigmentServiceImpl implements AssignmentService {
             request = requestList.get(i);
             createAssignment(request);
         }
+        int patientId = requestList.get(0).get("patient_id").asInt();
+        //get fcm Token of current patient and send notification
+
+
+        Optional<Patient> queryResponse = this.patientRepo.findById(patientId);
+
+        if(queryResponse.isEmpty()) {
+            return new ResponseEntity<>(Map.of("message", "Patient with given ID doesn't exist"), HttpStatus.NOT_FOUND);
+        }
+
+        Patient patient = (Patient) queryResponse.get();
+
+        String fcmToken = patient.getFcmToken();
+        System.out.println("--------------------");
+        System.out.println(fcmToken);
+
+        if(fcmToken != null){
+            Notification notification = Notification.builder()
+                .setTitle("New Assignments")
+                .setBody("Doctor has pushed new notifications for you!!")
+                .build();
+
+        FirebaseMessaging.getInstance().sendAsync(Message.builder()
+                .setNotification(notification)
+                .setToken(fcmToken)
+                .build());
+        }
+
+        
 
         return new ResponseEntity<>(
             new ApiResponse(true, "Assignment created!", null),
