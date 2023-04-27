@@ -52,7 +52,7 @@ public class Patient {
     @JsonIgnore
     private List<Answer> answerList;
 
-    @Column(name= "fcm_token", unique = true, nullable = true)
+    @Column(name= "fcm_token", nullable = true)
     private String fcmToken;
 
     // public int getPatientId() {
