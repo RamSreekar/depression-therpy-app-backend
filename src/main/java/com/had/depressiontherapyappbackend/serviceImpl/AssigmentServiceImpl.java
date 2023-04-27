@@ -98,8 +98,6 @@ public class AssigmentServiceImpl implements AssignmentService {
             createAssignment(request);
         }
 
-
-
         return new ResponseEntity<>(
             new ApiResponse(true, "Assignment created!", null),
             HttpStatus.OK
