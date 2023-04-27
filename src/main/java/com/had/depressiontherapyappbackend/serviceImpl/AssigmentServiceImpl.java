@@ -98,11 +98,6 @@ public class AssigmentServiceImpl implements AssignmentService {
             createAssignment(request);
         }
 
-        //get this particular patient device's fcmToken from db and use in setToken() fn
-//        FirebaseMessaging.getInstance().sendAsync(Message.builder()
-//                .setNotification(new Notification("Title", "Message"))
-//                .setToken("<device registration token>")
-//                .build());
 
 
         return new ResponseEntity<>(

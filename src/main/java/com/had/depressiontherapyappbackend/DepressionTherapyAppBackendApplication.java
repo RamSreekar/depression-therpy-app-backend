@@ -73,13 +73,14 @@ public class DepressionTherapyAppBackendApplication implements CommandLineRunner
 		System.out.println("\n-----------------------------------------\n");
 		pwdEncoder = null;
 
-//		InputStream serviceAccount = new FileInputStream("src/main/resources/better-u-1bfee-5b2cf3de3022.json");
-//
-//		FirebaseOptions options = new FirebaseOptions.Builder()
-//				.setCredentials(GoogleCredentials.fromStream(serviceAccount))
-//				.build();
-//
-//		FirebaseApp.initializeApp(options);
+		//initialize firebase
+		InputStream serviceAccount = new FileInputStream("src/main/resources/better-u-1bfee-5b2cf3de3022.json");
+
+		FirebaseOptions options = new FirebaseOptions.Builder()
+				.setCredentials(GoogleCredentials.fromStream(serviceAccount))
+				.build();
+
+		FirebaseApp.initializeApp(options);
 
 
 		// ResponseEntity<?> response = this.userServiceImpl.createUserWithoutApi();
