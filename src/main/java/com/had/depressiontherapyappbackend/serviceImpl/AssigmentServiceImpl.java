@@ -1,6 +1,7 @@
 package com.had.depressiontherapyappbackend.serviceImpl;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import com.google.firebase.messaging.FirebaseMessaging;
@@ -18,6 +19,7 @@ import com.had.depressiontherapyappbackend.entities.Item;
 import com.had.depressiontherapyappbackend.entities.Patient;
 import com.had.depressiontherapyappbackend.payloads.ApiResponse;
 import com.had.depressiontherapyappbackend.repositories.AssignmentRepo;
+import com.had.depressiontherapyappbackend.repositories.PatientRepo;
 import com.had.depressiontherapyappbackend.services.AssignmentService;
 
 @Service
@@ -33,6 +35,9 @@ public class AssigmentServiceImpl implements AssignmentService {
 
     @Autowired
     private ItemServiceImpl itemServiceImpl;
+
+    @Autowired
+    private PatientRepo patientRepo;
 
     @Autowired
     public AssigmentServiceImpl(AssignmentRepo assignmentRepo) {
@@ -97,7 +102,28 @@ public class AssigmentServiceImpl implements AssignmentService {
             request = requestList.get(i);
             createAssignment(request);
         }
+        int patientId = requestList.get(0).get("patient_id").asInt();
+        //get fcm Token of current patient and send notification
 
+        Optional<Patient> queryResponse = this.patientRepo.findById(patientId);
+
+        if(queryResponse.isEmpty()) {
+            return new ResponseEntity<>(Map.of("message", "Patient with given ID doesn't exist"), HttpStatus.NOT_FOUND);
+        }
+
+        Patient patient = (Patient) queryResponse.get();
+
+        String fcmToken = patient.getFcmToken();
+
+        Notification notification = Notification.builder()
+                .setTitle("New Assignments")
+                .setBody("Doctor has pushed new notifications for you!!")
+                .build();
+
+        FirebaseMessaging.getInstance().sendAsync(Message.builder()
+                .setNotification(notification)
+                .setToken(fcmToken)
+                .build());
 
 
         return new ResponseEntity<>(
