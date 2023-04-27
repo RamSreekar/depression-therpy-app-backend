@@ -193,4 +193,23 @@ public class PatientServiceImpl implements PatientService {
 
         return new ResponseEntity<>("Patient fcm token has been updated!", HttpStatus.OK);
     }
+
+    @Override
+    public ResponseEntity<?> getCurrFcmToken(int patientId) {
+
+        Optional<Patient> queryResponse = patientRepo.findById(patientId);
+
+        if(queryResponse.isEmpty()) {
+            return new ResponseEntity<>(Map.of("message", "Patient with given ID doesn't exist"), HttpStatus.NOT_FOUND);
+        }
+
+        Patient patient = (Patient) queryResponse.get();
+
+        if (patient.getFcmToken() == null || patient.getFcmToken().isEmpty()) {
+            return new ResponseEntity<>(Map.of("fcmToken", "Token not available for patient"), HttpStatus.OK);
+        }
+
+        return new ResponseEntity<>(Map.of("fcmToken", patient.getFcmToken()), HttpStatus.OK);
+
+    }
 }

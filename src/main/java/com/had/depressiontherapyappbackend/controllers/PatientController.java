@@ -69,4 +69,9 @@ public class PatientController {
     public ResponseEntity<?> updateFcmToken(@PathVariable("patientId") int patientId, @RequestBody JsonNode request) {
         return patientServiceImpl.updateFcmToken(patientId, request);
     }
+
+    @GetMapping(path = "/{patientId}/fcm-token")
+    public ResponseEntity<?> getCurrFcmToken(@PathVariable("patientId") int patientId) {
+        return patientServiceImpl.getCurrFcmToken(patientId);
+    }
 }
