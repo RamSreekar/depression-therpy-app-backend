@@ -164,7 +164,7 @@ public class UserServiceImpl implements UserService {
         List<User> res = userRepo.findByEmail(email);
 
         if(res.size() == 0) {
-            return new ResponseEntity<>(Map.of("message", "User doesn't exist with given username."), HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(Map.of("message", "User doesn't exist with given email!"), HttpStatus.NOT_FOUND);
         }
         
         User user = res.get(0);
