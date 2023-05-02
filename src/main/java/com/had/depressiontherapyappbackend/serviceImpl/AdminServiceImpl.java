@@ -121,7 +121,7 @@ public class AdminServiceImpl implements AdminService {
 
         return new ResponseEntity<>(
                 new ApiResponse(true, "Patient details added.", null)
-                , HttpStatus.NOT_FOUND
+                , HttpStatus.OK
         );
     }
 
