@@ -1,5 +1,6 @@
 package com.had.depressiontherapyappbackend.controllers;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import com.had.depressiontherapyappbackend.entities.Doctor;
 import com.had.depressiontherapyappbackend.entities.Patient;
 import com.had.depressiontherapyappbackend.entities.User;
@@ -80,5 +81,11 @@ public class UserController {
     @GetMapping(path = "/get-doctors")
     public ResponseEntity<?> getAllDoctors() {
         return userServiceImpl.getAllDoctors();
+    }
+
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'PATIENT', 'DOCTOR')")
+    @PutMapping(path = "/change-password")
+    public ResponseEntity<?> changePassword(@RequestBody JsonNode request) {
+        return userServiceImpl.changePassword(request);
     }
 }

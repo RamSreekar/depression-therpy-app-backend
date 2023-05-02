@@ -19,6 +19,8 @@ public interface UserService {
 
     public ResponseEntity<?> checkEmail(User user); 
 
+    public ResponseEntity<?> changePassword(JsonNode request);
+
     public ResponseEntity<?> addPatient(Patient patient) throws Exception;
 
     public ResponseEntity<?> registerDoctor(Doctor doctor) throws Exception;

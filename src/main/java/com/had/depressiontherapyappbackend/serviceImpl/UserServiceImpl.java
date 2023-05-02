@@ -75,9 +75,6 @@ public class UserServiceImpl implements UserService {
     public ResponseEntity<?> createUser(User user) {
         ResponseEntity<?> emailCheck = checkEmail(user);
         int statusCode = emailCheck.getStatusCode().value();
-        // ApiResponse apiResponse = (ApiResponse) emailCheck.getBody();
-        // boolean emailExists = apiResponse.getSuccess();
-        // if(!emailExists) return emailCheck;
         if(statusCode != 200) return emailCheck;
 
         int roleId = user.getUserRole().getRoleId();
@@ -124,17 +121,7 @@ public class UserServiceImpl implements UserService {
         }
 
         User reqUser = res.get();
-
-
-        // if(reqUser == null) {
-        //     System.out.println("User doesn't exist! - 2");
-        //     return new ResponseEntity<>(
-        //             new ApiResponse(false, "User with given ID doesn't exist", null)
-        //             , HttpStatus.NOT_FOUND
-        //     );
-        // }
     
-
         return new ResponseEntity<>(
                 new ApiResponse(true, "", reqUser)
                 , HttpStatus.OK
@@ -177,14 +164,11 @@ public class UserServiceImpl implements UserService {
         List<User> res = userRepo.findByEmail(email);
 
         if(res.size() == 0) {
-            apiResponse = new ApiResponse(false, "User doesn't exist with given username.", null);
+            return new ResponseEntity<>(Map.of("message", "User doesn't exist with given username."), HttpStatus.NOT_FOUND);
         }
-        else {
-            User user = res.get(0);
-            apiResponse = new ApiResponse(true, "User exists!", Map.of("userId", user.getUserId()));
-        }
-
-        return new ResponseEntity<>(apiResponse, HttpStatus.OK);
+        
+        User user = res.get(0);
+        return new ResponseEntity<>(user, HttpStatus.OK);
     }
 
     @Override
@@ -204,6 +188,32 @@ public class UserServiceImpl implements UserService {
                 new ApiResponse(true, "", reqUser.getDemographics())
                 , HttpStatus.OK
         );
+    }
+
+    @Override
+    public ResponseEntity<?> changePassword(JsonNode credentials) {
+        String email = credentials.get("email").asText();
+        String rawPassword = credentials.get("oldPassword").asText();
+        String newPassword = credentials.get("newPassword").asText();
+
+        ResponseEntity response = getUserFromEmail(email);
+        if(response.getStatusCode().value() != 200) {
+            return response;
+        }
+
+        User user = (User) response.getBody();
+        String userPasswordEncoded = user.getPassword();
+
+        BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
+        boolean passwordsMatching = bCryptPasswordEncoder.matches(rawPassword, userPasswordEncoded);
+        if(!passwordsMatching) {
+            return new ResponseEntity<>(Map.of("message", "Password incorrect!"), HttpStatus.FORBIDDEN);
+        }
+
+        user.setPassword(bCryptPasswordEncoder.encode(newPassword));
+        userRepo.save(user);
+
+        return new ResponseEntity<>(Map.of("message", "Password has been changed!"), HttpStatus.OK);
     }
 
     @Override
