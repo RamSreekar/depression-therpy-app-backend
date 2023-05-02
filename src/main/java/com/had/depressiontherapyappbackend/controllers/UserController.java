@@ -29,6 +29,7 @@ public class UserController {
         return userServiceImpl.createUser(user);
     }
 
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'PATIENT', 'DOCTOR')")
     @GetMapping(path = "/get/{userId}")
     public ResponseEntity<?> getUser(@PathVariable("userId") int userId) {
         ApiResponse apiResponse = (ApiResponse) userServiceImpl.getUser(userId).getBody();
@@ -57,6 +58,7 @@ public class UserController {
         return userServiceImpl.addPatient(patient);
     }
 
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'PATIENT')")
     @PostMapping(path = "/register-doctor")
     public ResponseEntity<?> registerPatient(Doctor doctor) throws Exception {
         return userServiceImpl.registerDoctor(doctor);
@@ -74,6 +76,7 @@ public class UserController {
         return userServiceImpl.getDemographicsOfUser(userId);
     }
     
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'PATIENT')")
     @GetMapping(path = "/get-doctors")
     public ResponseEntity<?> getAllDoctors() {
         return userServiceImpl.getAllDoctors();

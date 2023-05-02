@@ -41,7 +41,7 @@ public class UserServiceImpl implements UserService {
     public static int calculateAgeFromDob(String dobString) {
         //Calculate Age from DOB
         int calculatedAge;
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d/MM/yyyy");
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
         LocalDate dobDate = LocalDate.parse(dobString, formatter);
         calculatedAge = Period.between(dobDate, LocalDate.now()).getYears();

@@ -48,6 +48,7 @@ public class PatientController {
         return patientServiceImpl.getMoodList(patientId);
     }
 
+    @PreAuthorize("hasAuthority('PATIENT')")
     @PostMapping(path = "/set-mood")
     public ResponseEntity<?> setPatientMood(@RequestBody JsonNode request) {
         return patientServiceImpl.setPatientMood(request);
@@ -65,11 +66,13 @@ public class PatientController {
         return patientServiceImpl.getAnswerWithPatientIdAndQuestionId(patientId, questionId);
     }
 
+    @PreAuthorize("hasAuthority('PATIENT')")
     @PutMapping(path = "/{patientId}/fcm-token")
     public ResponseEntity<?> updateFcmToken(@PathVariable("patientId") int patientId, @RequestBody JsonNode request) {
         return patientServiceImpl.updateFcmToken(patientId, request);
     }
 
+    @PreAuthorize("hasAuthority('PATIENT')")
     @GetMapping(path = "/{patientId}/fcm-token")
     public ResponseEntity<?> getCurrFcmToken(@PathVariable("patientId") int patientId) {
         return patientServiceImpl.getCurrFcmToken(patientId);

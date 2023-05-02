@@ -39,6 +39,7 @@ public class AssignmentController {
         return assigmentServiceImpl.addListOfAssignmnets(request);
     }
 
+    @PreAuthorize("hasAuthority('PATIENT')")
     @PutMapping(path = "/{assignmentId}/mark-as-completed")
     public ResponseEntity<?> markAssignmentAsCompleted(@PathVariable("assignmentId") int assignmentId) {
         return assigmentServiceImpl.markAssignmentAsCompleted(assignmentId);

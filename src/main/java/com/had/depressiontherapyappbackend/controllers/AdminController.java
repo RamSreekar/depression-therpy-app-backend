@@ -3,6 +3,7 @@ package com.had.depressiontherapyappbackend.controllers;
 import com.fasterxml.jackson.databind.JsonNode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -33,11 +34,13 @@ public class AdminController {
         return adminServiceImpl.createAdmin(user);
     }
 
+    @PreAuthorize("hasAuthority('ADMIN')")
     @PostMapping(path = "/register-doctor")
     public ResponseEntity<?> registerDoctor(@RequestBody Doctor doctor) throws Exception {
         return adminServiceImpl.registerDoctor(doctor);
     }
 
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'PATIENT')")
     @PostMapping(path = "/assignDoctorToPatient")
     public ResponseEntity<?> assignDoctorToPatient(@RequestBody JsonNode request) {
         int patientId = request.get("patientId").asInt();
@@ -45,6 +48,7 @@ public class AdminController {
         return adminServiceImpl.assignDoctorToPatient(patientId, doctorId);
     }
 
+    @PreAuthorize("hasAuthority('ADMIN')")
     @PostMapping(path = "/add-question")
     public ResponseEntity<?> addQuestion(@RequestBody Question question) {
         return adminServiceImpl.addQuestion(question);

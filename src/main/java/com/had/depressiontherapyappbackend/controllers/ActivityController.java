@@ -26,7 +26,7 @@ public class ActivityController {
         return activityServiceImpl.getAllActivities();
     }
 
-    @PreAuthorize("hasAuthority('DOCTOR')")
+    @PreAuthorize("hasAnyAuthority('DOCTOR', 'PATIENT')")
     @GetMapping(path = "/{activityId}/questions")
     public ResponseEntity<?> getAllQuestionsOfOneActivity(@PathVariable("activityId") int activityId) {
         return activityServiceImpl.getAllQuestionsOfOneActivity(activityId);

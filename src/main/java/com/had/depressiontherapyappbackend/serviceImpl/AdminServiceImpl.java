@@ -99,6 +99,8 @@ public class AdminServiceImpl implements AdminService {
     public ResponseEntity<?> registerDoctor(Doctor doctor) throws Exception {
         int userId = doctor.getDoctorId();
 
+        System.out.println(doctor);
+        System.out.println("\n"+userId+"\n");
 
         ResponseEntity<?> res = this.userServiceImpl.getUser(userId);
         ApiResponse apiResponse = (ApiResponse) res.getBody();
@@ -109,7 +111,7 @@ public class AdminServiceImpl implements AdminService {
         if(user == null) {
             return new ResponseEntity<>(
                     new ApiResponse(false, "User with given Id doesn't exist", null)
-                    , HttpStatus.OK
+                    , HttpStatus.NOT_FOUND
             );
         }
 
@@ -119,7 +121,7 @@ public class AdminServiceImpl implements AdminService {
 
         return new ResponseEntity<>(
                 new ApiResponse(true, "Patient details added.", null)
-                , HttpStatus.OK
+                , HttpStatus.NOT_FOUND
         );
     }
 
