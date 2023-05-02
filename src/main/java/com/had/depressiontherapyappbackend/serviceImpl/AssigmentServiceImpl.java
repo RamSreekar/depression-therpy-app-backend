@@ -13,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.fasterxml.jackson.databind.JsonNode;
+import com.had.depressiontherapyappbackend.config.FirebaseConfig;
 import com.had.depressiontherapyappbackend.entities.Assignment;
 import com.had.depressiontherapyappbackend.entities.Doctor;
 import com.had.depressiontherapyappbackend.entities.Item;
@@ -39,9 +40,17 @@ public class AssigmentServiceImpl implements AssignmentService {
     @Autowired
     private PatientRepo patientRepo;
 
+    private FirebaseConfig firebaseConfig;
+
+    // @Autowired
+    // public AssigmentServiceImpl(FirebaseConfig firebaseConfig) {
+    //     this.firebaseConfig = firebaseConfig;
+    // }
+
     @Autowired
-    public AssigmentServiceImpl(AssignmentRepo assignmentRepo) {
+    public AssigmentServiceImpl(AssignmentRepo assignmentRepo, FirebaseConfig firebaseConfig) {
         this.assignmentRepo = assignmentRepo;
+        this.firebaseConfig = firebaseConfig;
     }
     
     @Override 

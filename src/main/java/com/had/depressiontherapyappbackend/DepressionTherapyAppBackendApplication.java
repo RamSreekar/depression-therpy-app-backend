@@ -42,24 +42,10 @@ public class DepressionTherapyAppBackendApplication implements CommandLineRunner
 		}
 	}
 
-	private void initializeFirebaseApp() throws Exception{
-		InputStream serviceAccount = new FileInputStream("src/main/resources/better-u-1bfee-5b2cf3de3022.json");
 
-		FirebaseOptions options = new FirebaseOptions.Builder()
-				.setCredentials(GoogleCredentials.fromStream(serviceAccount))
-				.build();
-
-		// FirebaseApp.initializeApp(options);
-		
-		if (FirebaseApp.getApps().isEmpty()) {
-			FirebaseApp.initializeApp(options);
-		}
-	}
 
 	@Override
 	public void run(String... args) throws Exception {
-		this.initializeFirebaseApp();
-		
 		System.out.println("\n----------- Server started ----------------\n");
 	}
 
